@@ -2,43 +2,19 @@ package org.academiadecodigo.javabank.model;
 
 import org.academiadecodigo.javabank.model.account.Account;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * The customer domain entity
+ * The customer model entity
  */
-public class Customer {
+public class Customer extends AbstractModel {
 
-    private int id;
     private String name;
-
-    private Map<Integer, Account> accounts = new HashMap<>();
-
-    /**
-     * Creates a new instance of Customer and initializes it with given id and name
-     *
-     * @param id the customer id
-     * @param name the customer name
-     */
-    public Customer(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    private List<Account> accounts = new ArrayList<>();
 
     /**
-     * Gets the customer id
-     *
-     * @return the customer id
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * Gets the customer name
+     * Gets the name of the customer
      *
      * @return the customer name
      */
@@ -47,46 +23,21 @@ public class Customer {
     }
 
     /**
+     * Sets the name of the customer
+     *
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
      * Gets the customer accounts
      *
      * @return the accounts
      */
-    public Set<Account> getAccounts() {
-        return new HashSet<>(accounts.values());
-    }
-
-    /**
-     * Gets the customer account ids
-     *
-     * @return the accounts ids
-     */
-    public Set<Integer> getAccountIds() {
-        return accounts.keySet();
-    }
-
-    /**
-     * Gets the balance of an {@link Account}
-     *
-     * @param id the id of the account
-     * @return the account balance
-     */
-    public double getBalance(int id) {
-        return accounts.get(id).getBalance();
-    }
-
-    /**
-     * Gets the total customer balance
-     *
-     * @return the balance
-     */
-    public double getBalance() {
-
-        double balance = 0;
-        for (Account account : accounts.values()) {
-            balance += account.getBalance();
-        }
-
-        return balance;
+    public List<Account> getAccounts() {
+        return accounts;
     }
 
     /**
@@ -95,8 +46,18 @@ public class Customer {
      * @param account the account to add
      */
     public void addAccount(Account account) {
-        accounts.put(account.getId(), account);
+        accounts.add(account);
     }
+
+    /**
+     * Removes an account from the customer
+     *
+     * @param account the account to remove
+     */
+    public void removeAccount(Account account) {
+        accounts.remove(account);
+    }
+
 }
 
 

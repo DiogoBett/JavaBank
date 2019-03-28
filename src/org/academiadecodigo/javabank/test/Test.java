@@ -6,9 +6,9 @@ public class Test {
 
         Test test = new Test();
         test.testAccount();
-        test.testCustomer();
-        test.testAccountManager();
-        test.testBank();
+        test.testAuthService();
+        test.testCustomerService();
+        test.testAccountService();
 
     }
 
@@ -22,20 +22,21 @@ public class Test {
         SavingsAccountTest savingsAccountTest = new SavingsAccountTest();
         System.out.println("Checking Account: " + Test.getResult(checkingAccountTest.test()));
         System.out.println("Savings Account: " + Test.getResult(savingsAccountTest.test()));
+
     }
 
-    private void testCustomer() {
-        CustomerTest customerTest = new CustomerTest();
-        System.out.println("Customer: " + Test.getResult(customerTest.test()));
+    private void testAuthService() {
+        AuthServiceTest authServiceTest = new AuthServiceTest();
+        System.out.println("AuthService: " + Test.getResult(authServiceTest.test()));
     }
 
-    private void testAccountManager() {
-        AccountManagerTest accountManagerTest = new AccountManagerTest();
-        System.out.println("AccountManager: " + Test.getResult(accountManagerTest.test()));
+    private void testCustomerService() {
+        CustomerServiceTest customerServiceTest = new CustomerServiceTest();
+        System.out.println("Customer: " + Test.getResult(customerServiceTest.test()));
     }
 
-    private void testBank() {
-        BankTest bankTest = new BankTest();
-        System.out.println("Bank: " + Test.getResult(bankTest.test()));
+    private void testAccountService() {
+        AccountServiceTest accountServiceTest = new AccountServiceTest();
+        System.out.println("AccountService: " + Test.getResult(accountServiceTest.test()));
     }
 }

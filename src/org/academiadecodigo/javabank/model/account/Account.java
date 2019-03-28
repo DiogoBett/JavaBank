@@ -1,17 +1,12 @@
 package org.academiadecodigo.javabank.model.account;
 
+import org.academiadecodigo.javabank.model.Model;
+
 /**
  * Common interface for bank accounts, provides methods to access account
  * information and perform account transactions
  */
-public interface Account {
-
-    /**
-     * Gets the account id
-     *
-     * @return the account id
-     */
-    int getId();
+public interface Account extends Model {
 
     /**
      * Gets the account balance

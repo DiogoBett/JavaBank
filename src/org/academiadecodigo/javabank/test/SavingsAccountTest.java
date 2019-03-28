@@ -7,7 +7,8 @@ public class SavingsAccountTest {
 
     public boolean test() {
 
-        Account account = new SavingsAccount(1);
+        Account account = new SavingsAccount();
+        account.setId(1);
 
         // initial balance should be zero
         if (account.getBalance() != 0) {

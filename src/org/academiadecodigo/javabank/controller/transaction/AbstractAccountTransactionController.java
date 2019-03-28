@@ -1,8 +1,10 @@
 package org.academiadecodigo.javabank.controller.transaction;
 
 import org.academiadecodigo.javabank.controller.AbstractController;
-import org.academiadecodigo.javabank.controller.Controller;
-import org.academiadecodigo.javabank.model.Bank;
+import org.academiadecodigo.javabank.services.AccountService;
+import org.academiadecodigo.javabank.services.CustomerService;
+
+import java.util.Set;
 
 /**
  * A generic account transaction controller to be used as a base for concrete transaction controller implementations
@@ -11,14 +13,31 @@ import org.academiadecodigo.javabank.model.Bank;
  */
 public abstract class AbstractAccountTransactionController extends AbstractController implements AccountTransactionController {
 
-    protected Bank bank;
+    protected AccountService accountService;
+    private CustomerService customerService;
 
     /**
-     * Sets the bank
+     * Sets the account service
      *
-     * @param bank the bank to set
+     * @param accountService the account service to set
      */
-    public void setBank(Bank bank) {
-        this.bank = bank;
+    public void setAccountService(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
+    /**
+     * Sets the customer service
+     *
+     * @param customerService the customer service to set
+     */
+    public void setCustomerService(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
+    /**
+     * @see AccountTransactionController#getAccountIds()
+     */
+    public Set<Integer> getAccountIds() {
+        return customerService.listCustomerAccountIds(authService.getAccessingCustomer().getId());
     }
 }

@@ -1,29 +1,29 @@
 package org.academiadecodigo.javabank.view;
 
 import org.academiadecodigo.javabank.controller.BalanceController;
-import org.academiadecodigo.javabank.model.Bank;
 import org.academiadecodigo.javabank.model.Customer;
 import org.academiadecodigo.javabank.model.account.Account;
 
 import java.text.DecimalFormat;
-import java.util.Set;
+import java.util.List;
 
 /**
  * A view used to show the customer balance
+ *
  * @see BalanceController
  */
 public class BalanceView implements View {
 
     private DecimalFormat df = new DecimalFormat("#.##");
-    private Bank bank;
+    private BalanceController balanceController;
 
     /**
-     * Sets the bank
+     * Sets the controller responsible for rendering the view
      *
-     * @param bank the bank to set
+     * @param balanceController the controller to set
      */
-    public void setBank(Bank bank) {
-        this.bank = bank;
+    public void setBalanceController(BalanceController balanceController) {
+        this.balanceController = balanceController;
     }
 
     /**
@@ -36,14 +36,14 @@ public class BalanceView implements View {
 
     private void showBalance() {
 
-        Customer customer = bank.getLoginCustomer();
+        Customer customer = balanceController.getCustomer();
         System.out.println("\n" + customer.getName() + Messages.VIEW_BALANCE_MESSAGE + "\n");
 
-        Set<Account> accounts = customer.getAccounts();
+        List<Account> accounts = customer.getAccounts();
         for (Account account : accounts) {
             System.out.println(account.getId() + "\t" + account.getAccountType() + "\t" + df.format(account.getBalance()));
         }
 
-        System.out.println("\n\n" + Messages.VIEW_BALANCE_TOTAL_MESSAGE + df.format(customer.getBalance()));
+        System.out.println("\n\n" + Messages.VIEW_BALANCE_TOTAL_MESSAGE + df.format(balanceController.getCustomerBalance()));
     }
 }

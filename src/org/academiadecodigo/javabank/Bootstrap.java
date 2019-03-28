@@ -4,9 +4,11 @@ import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.javabank.controller.*;
 import org.academiadecodigo.javabank.controller.transaction.DepositController;
 import org.academiadecodigo.javabank.controller.transaction.WithdrawalController;
-import org.academiadecodigo.javabank.managers.AccountManager;
-import org.academiadecodigo.javabank.model.Bank;
+import org.academiadecodigo.javabank.factories.AccountFactory;
 import org.academiadecodigo.javabank.model.Customer;
+import org.academiadecodigo.javabank.services.AccountServiceImpl;
+import org.academiadecodigo.javabank.services.AuthServiceImpl;
+import org.academiadecodigo.javabank.services.CustomerServiceImpl;
 import org.academiadecodigo.javabank.view.*;
 
 import java.util.HashMap;
@@ -17,66 +19,97 @@ import java.util.Map;
  */
 public class Bootstrap {
 
+    private AuthServiceImpl authService;
+    private CustomerServiceImpl customerService;
+    private AccountServiceImpl accountService;
+
     /**
-     * Creates a {@code Bank} and populates it with data
+     * Sets the authentication service
      *
-     * @return the bank
+     * @param authService the authentication service to set
      */
-    public Bank generateTestData() {
+    public void setAuthService(AuthServiceImpl authService) {
+        this.authService = authService;
+    }
 
-        Bank bank = new Bank();
-        AccountManager accountManager = new AccountManager();
-        bank.setAccountManager(accountManager);
+    /**
+     * Sets the customer service
+     *
+     * @param customerService the customer service to set
+     */
+    public void setCustomerService(CustomerServiceImpl customerService) {
+        this.customerService = customerService;
+    }
 
-        Customer c1 = new Customer(1, "Rui");
-        Customer c2 = new Customer(2, "Sergio");
-        Customer c3 = new Customer(3, "Bruno");
-        bank.addCustomer(c1);
-        bank.addCustomer(c2);
-        bank.addCustomer(c3);
+    /**
+     * Sets the account service
+     *
+     * @param accountService the account service to set
+     */
+    public void setAccountService(AccountServiceImpl accountService) {
+        this.accountService = accountService;
+    }
 
-        return bank;
+    /**
+     * Creates a {@code CustomerService} and populates it with data
+     */
+    public void loadCustomers() {
+
+        Customer c1 = new Customer();
+        Customer c2 = new Customer();
+        Customer c3 = new Customer();
+        c1.setName("Rui");
+        c2.setName("Sergio");
+        c3.setName("Bruno");
+        customerService.add(c1);
+        customerService.add(c2);
+        customerService.add(c3);
     }
 
     /**
      * Wires the necessary object dependencies
      *
-     * @param bank the bank to wire
      * @return the login controller
      */
-    public LoginController wireObjects(Bank bank) {
+    public Controller wireObjects() {
 
         // attach all input to standard i/o
         Prompt prompt = new Prompt(System.in, System.out);
+
+        // wire services
+        authService.setCustomerService(customerService);
 
         // wire login controller and view
         LoginController loginController = new LoginController();
         LoginView loginView = new LoginView();
         loginController.setView(loginView);
-        loginController.setBank(bank);
-        loginView.setBank(bank);
+        loginController.setAuthService(authService);
         loginView.setLoginController(loginController);
         loginView.setPrompt(prompt);
 
         // wire main controller and view
         MainController mainController = new MainController();
         MainView mainView = new MainView();
-        mainView.setBank(bank);
         mainView.setPrompt(prompt);
         mainView.setMainController(mainController);
         mainController.setView(mainView);
+        mainController.setAuthService(authService);
         loginController.setNextController(mainController);
 
         // wire balance controller and view
         BalanceController balanceController = new BalanceController();
         BalanceView balanceView = new BalanceView();
+        balanceView.setBalanceController(balanceController);
         balanceController.setView(balanceView);
-        balanceView.setBank(bank);
+        balanceController.setCustomerService(customerService);
+        balanceController.setAuthService(authService);
 
         // wire new account controller and view
         NewAccountView newAccountView = new NewAccountView();
         NewAccountController newAccountController = new NewAccountController();
-        newAccountController.setBank(bank);
+        newAccountController.setAccountService(accountService);
+        newAccountController.setAuthService(authService);
+        newAccountController.setAccountFactory(new AccountFactory());
         newAccountController.setView(newAccountView);
         newAccountView.setNewAccountController(newAccountController);
 
@@ -85,14 +118,16 @@ public class Bootstrap {
         WithdrawalController withdrawalController = new WithdrawalController();
         AccountTransactionView depositView = new AccountTransactionView();
         AccountTransactionView withdrawView = new AccountTransactionView();
-        depositController.setBank(bank);
+        depositController.setAuthService(authService);
+        depositController.setAccountService(accountService);
+        depositController.setCustomerService(customerService);
         depositController.setView(depositView);
-        withdrawalController.setBank(bank);
+        withdrawalController.setAuthService(authService);
+        withdrawalController.setCustomerService(customerService);
+        withdrawalController.setAccountService(accountService);
         withdrawalController.setView(withdrawView);
-        depositView.setBank(bank);
         depositView.setPrompt(prompt);
         depositView.setTransactionController(depositController);
-        withdrawView.setBank(bank);
         withdrawView.setPrompt(prompt);
         withdrawView.setTransactionController(withdrawalController);
 

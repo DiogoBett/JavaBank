@@ -1,6 +1,5 @@
 package org.academiadecodigo.javabank.controller;
 
-import org.academiadecodigo.javabank.model.Bank;
 import org.academiadecodigo.javabank.view.LoginView;
 
 /**
@@ -9,35 +8,39 @@ import org.academiadecodigo.javabank.view.LoginView;
 public class LoginController extends AbstractController {
 
     private Controller nextController;
-
-    private Bank bank;
+    private boolean authFailed = false;
 
     /**
      * Sets the next controller
      *
-     * @param nextController the next controller to be set
+     * @param nextController the next controller to set
      */
     public void setNextController(Controller nextController) {
         this.nextController = nextController;
     }
 
     /**
-     * Sets the bank
-     *
-     * @param bank the bank to be set
-     */
-    public void setBank(Bank bank) {
-        this.bank = bank;
-    }
-
-    /**
-     * Identifies the logged in customer
+     * Initializes the next controller, if authentication is successful
      *
      * @param id the customer id
      */
     public void onLogin(int id) {
-        bank.setLoginCustomer(id);
-        nextController.init();
+
+        if (authService.authenticate(id)) {
+            nextController.init();
+            return;
+        }
+
+        authFailed = true;
+        init();
     }
 
+    /**
+     * Checks if authentication failed
+     *
+     * @return {@code true} if authentication fails
+     */
+    public boolean isAuthFailed() {
+        return authFailed;
+    }
 }

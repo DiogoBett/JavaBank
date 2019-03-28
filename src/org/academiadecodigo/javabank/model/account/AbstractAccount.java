@@ -1,33 +1,19 @@
 package org.academiadecodigo.javabank.model.account;
 
+import org.academiadecodigo.javabank.model.AbstractModel;
+
 /**
- * A generic account domain entity to be used as a base for concrete types of accounts
+ * A generic account model entity to be used as a base for concrete types of accounts
  * @see Account
  */
-public abstract class AbstractAccount implements Account {
+public abstract class AbstractAccount extends AbstractModel implements Account {
 
-    private int id;
     private double balance = 0;
-
-    /**
-     * Initializes a new {@code Account} instance with a given id
-     *
-     * @param id the account id
-     */
-    public AbstractAccount(int id) {
-        this.id = id;
-    }
-
-    /**
-     * @see Account#getId()
-     */
-    public int getId() {
-        return id;
-    }
 
     /**
      * @see Account#getBalance()
      */
+    @Override
     public double getBalance() {
         return balance;
     }
@@ -35,6 +21,7 @@ public abstract class AbstractAccount implements Account {
     /**
      * @see Account#getAccountType()
      */
+    @Override
     public abstract AccountType getAccountType();
 
     /**
@@ -43,6 +30,7 @@ public abstract class AbstractAccount implements Account {
      * @param amount the amount to credit
      * @see Account#credit(double)
      */
+    @Override
     public void credit(double amount) {
         if (canCredit(amount)) {
             balance += amount;
@@ -55,6 +43,7 @@ public abstract class AbstractAccount implements Account {
      * @param amount the amount to debit
      * @see Account#canDebit(double)
      */
+    @Override
     public void debit(double amount) {
         if (canDebit(amount)) {
             balance -= amount;
@@ -64,6 +53,7 @@ public abstract class AbstractAccount implements Account {
     /**
      * @see Account#canCredit(double)
      */
+    @Override
     public boolean canCredit(double amount) {
         return amount > 0;
     }
@@ -71,6 +61,7 @@ public abstract class AbstractAccount implements Account {
     /**
      * @see Account#canDebit(double)
      */
+    @Override
     public boolean canDebit(double amount) {
         return amount > 0 && amount <= balance;
     }
@@ -78,6 +69,7 @@ public abstract class AbstractAccount implements Account {
     /**
      * @see Account#canWithdraw()
      */
+    @Override
     public boolean canWithdraw() {
         return true;
     }

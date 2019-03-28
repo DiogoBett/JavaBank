@@ -23,6 +23,15 @@ public class MainController extends AbstractController {
     }
 
     /**
+     * Gets the customer name
+     *
+     * @return the customer name
+     */
+    public String getCustomerName() {
+        return authService.getAccessingCustomer().getName();
+    }
+
+    /**
      * Invokes the next controller based on menu selection
      *
      * @param option the option chosen
@@ -39,7 +48,5 @@ public class MainController extends AbstractController {
 
         controllerMap.get(option).init();
         init();
-
     }
-
 }

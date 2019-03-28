@@ -33,7 +33,7 @@ public class MainView extends AbstractView {
 
         MenuInputScanner scanner = new MenuInputScanner(UserOptions.getMessages());
         scanner.setError(Messages.VIEW_MAIN_ERROR);
-        scanner.setMessage("\n" + Messages.VIEW_MAIN_MESSAGE + bank.getLoginCustomer().getName());
+        scanner.setMessage("\n" + Messages.VIEW_MAIN_MESSAGE + mainController.getCustomerName());
         mainController.onMenuSelection(prompt.getUserInput(scanner));
     }
 }

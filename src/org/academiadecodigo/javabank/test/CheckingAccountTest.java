@@ -8,7 +8,8 @@ public class CheckingAccountTest {
 
     public boolean test() {
 
-        Account account = new CheckingAccount(1);
+        Account account = new CheckingAccount();
+        account.setId(1);
 
         // initial balance should be zero
         if (account.getBalance() != 0) {
