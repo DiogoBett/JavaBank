@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+
+    <persistence-unit name="dev" transaction-type="RESOURCE_LOCAL">
+
+        <description>
+            Persistence unit for Java Bank development environment
+        </description>
+
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <properties>
+            <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.connection.url" value="jdbc:h2:./src/main/resources/db/javabank"/>
+            <property name="hibernate.connection.username" value="sa"/>
+            <property name="hibernate.connection.password" value=""/>
+            <property name="hibernate.archive.autodetection" value="class"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.import_files" value="db/test-data.sql" />
+            <property name="hibernate.hbm2ddl.import_files_sql_extractor" value="org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor" />
+
+            <!-- Create database schema and populate with test data -->
+            <!--<property name="hibernate.hbm2ddl.auto" value="create"/>-->
+
+            <!-- Turn on for debug -->
+            <!--<property name="hibernate.show_sql" value="true"/>-->
+
+        </properties>
+    </persistence-unit>
+
+    <persistence-unit name="prod" transaction-type="RESOURCE_LOCAL">
+
+       <description>
+           Persistence Unit for Java Bank production environment
+       </description>
+
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <properties>
+            <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/javabank?useSSL=false"/>
+            <property name="hibernate.connection.username" value="root"/>
+            <property name="hibernate.connection.password" value=""/>
+            <property name="hibernate.archive.autodetection" value="class"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.import_files" value="db/test-data.sql" />
+            <property name="hibernate.hbm2ddl.import_files_sql_extractor" value="org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor" />
+
+            <!-- Validate database schema, data loss can occur if set to create or update -->
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+
+            <!-- Turn on for debug -->
+            <!--<property name="hibernate.show_sql" value="true"/>-->
+
+        </properties>
+    </persistence-unit>
+
+    <persistence-unit name="test" transaction-type="RESOURCE_LOCAL">
+
+        <description>
+            Persistence unit for Java Bank development environment
+        </description>
+
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <properties>
+            <!--
+            By default, closing the last connection to a database closes the database.
+            For an in-memory database, this means the content is lost.
+            To keep the database open, DB_CLOSE_DELAY=-1 is required
+            -->
+            <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.connection.url" value="jdbc:h2:mem:javabank;DB_CLOSE_DELAY=-1;"/>
+            <property name="hibernate.connection.username" value="sa"/>
+            <property name="hibernate.connection.password" value=""/>
+            <property name="hibernate.archive.autodetection" value="class"/>
+            <property name="hibernate.format_sql" value="true"/>
+
+            <!-- Create database schema and populate with test data -->
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.hbm2ddl.import_files" value="db/test-data.sql" />
+            <property name="hibernate.hbm2ddl.import_files_sql_extractor" value="org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor" />
+
+            <!-- Turn on for debug -->
+            <!--<property name="hibernate.show_sql" value="true"/>-->
+        </properties>
+    </persistence-unit>
+
+</persistence>

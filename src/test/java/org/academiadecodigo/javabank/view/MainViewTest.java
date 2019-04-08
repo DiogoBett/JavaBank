@@ -10,7 +10,6 @@ import java.io.PrintStream;
 
 import static org.mockito.Mockito.*;
 
-
 public class MainViewTest {
 
     private MainController mCtrl;
@@ -29,8 +28,6 @@ public class MainViewTest {
         mView = new MainView();
         mView.setMainController(mCtrl);
         mView.setPrompt(prompt);
-
-
     }
 
     @Test

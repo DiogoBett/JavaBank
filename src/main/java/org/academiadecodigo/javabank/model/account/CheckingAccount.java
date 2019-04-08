@@ -1,11 +1,14 @@
 package org.academiadecodigo.javabank.model.account;
 
+import javax.persistence.Entity;
+
 /**
  * A checking account with no restrictions
  * @see Account
  * @see AccountType#CHECKING
  */
-public class CheckingAccount extends AbstractAccount {
+@Entity
+public class CheckingAccount extends Account {
 
     /**
      * @see Account#getAccountType()

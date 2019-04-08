@@ -1,12 +1,15 @@
 package org.academiadecodigo.javabank.model.account;
 
+import javax.persistence.Entity;
+
 /**
  * A savings account model entity which requires a minimum balance
  * and can only be used for transferring money, not for debiting
  * @see Account
  * @see AccountType#SAVINGS
  */
-public class SavingsAccount extends AbstractAccount {
+@Entity
+public class SavingsAccount extends Account {
 
     public static final double MIN_BALANCE = 100;
 

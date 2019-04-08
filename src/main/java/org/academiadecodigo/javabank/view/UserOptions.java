@@ -6,7 +6,7 @@ import org.academiadecodigo.javabank.controller.transaction.DepositController;
 import org.academiadecodigo.javabank.controller.transaction.WithdrawalController;
 
 /**
- * The possible operations types
+ * The possible operation types
  */
 public enum UserOptions {
 

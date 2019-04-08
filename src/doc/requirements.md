@@ -76,3 +76,6 @@ What can not happen is for the view to update the model directly. Model updates 
 
 With the introduction of a service layer abstracting the domain model and providing a clean API to the controllers,
 all views now fetch data from controllers only, making this setup more like an MVP
+
+### Persistence notes
+* One-To-Many bi-directional relationship between Customer and Account

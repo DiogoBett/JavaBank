@@ -3,8 +3,8 @@ package org.academiadecodigo.javabank.services;
 import org.academiadecodigo.javabank.model.Customer;
 
 /**
- * Common interface for authentication services, provides methods
- * for customer authentication and authorization
+ * Common interface for authentication services, provides method
+ * for customer authentication
  */
 public interface AuthService {
 
@@ -22,5 +22,4 @@ public interface AuthService {
      * @return the customer
      */
     Customer getAccessingCustomer();
-
 }

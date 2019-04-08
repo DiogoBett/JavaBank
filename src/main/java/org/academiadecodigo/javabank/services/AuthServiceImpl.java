@@ -8,7 +8,7 @@ import org.academiadecodigo.javabank.model.Customer;
 public class AuthServiceImpl implements AuthService {
 
     private CustomerService customerService;
-    private Customer accessingCustomer;
+    private Integer accessingCustomerId;
 
     /**
      * Sets the customer service
@@ -25,8 +25,14 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean authenticate(Integer id) {
 
-        accessingCustomer = customerService.get(id);
-        return accessingCustomer != null;
+        Customer customer = customerService.get(id);
+
+        if (customer == null) {
+            return false;
+        }
+
+        accessingCustomerId = customer.getId();
+        return true;
     }
 
     /**
@@ -34,6 +40,6 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public Customer getAccessingCustomer() {
-        return accessingCustomer;
+        return customerService.get(accessingCustomerId);
     }
 }
