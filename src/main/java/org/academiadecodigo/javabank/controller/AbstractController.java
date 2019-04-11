@@ -5,6 +5,7 @@ import org.academiadecodigo.javabank.view.View;
 
 /**
  * A generic controller to be used as a base for concrete controller implementations
+ *
  * @see Controller
  */
 public abstract class AbstractController implements Controller {

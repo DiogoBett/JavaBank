@@ -54,7 +54,7 @@ public class NewAccountControllerTest {
         Account account = mock(Account.class);
         when(account.getId()).thenReturn(id);
         when(accountFactory.createAccount(any(AccountType.class))).thenReturn(account);
-        when(accountService.save(account)).thenReturn(account);
+        when(accountService.add(account)).thenReturn(id);
 
         // init the controller (which creates a new account)
         newAccountController.init();

@@ -28,6 +28,8 @@ public class MainViewTest {
         mView = new MainView();
         mView.setMainController(mCtrl);
         mView.setPrompt(prompt);
+
+
     }
 
     @Test

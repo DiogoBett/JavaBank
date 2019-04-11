@@ -1,28 +1,33 @@
-package org.academiadecodigo.javabank.persistence;
+package org.academiadecodigo.javabank.persistence.jpa;
 
 import org.junit.After;
 import org.junit.Before;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class JpaIntegrationTestHelper {
 
     protected static EntityManagerFactory emf;
-    protected static EntityManager em;
+    protected static JpaSessionManager sm;
+    protected static JpaTransactionManager tx;
 
     @Before
     public void init() {
         emf = Persistence.createEntityManagerFactory("test");
-        em = emf.createEntityManager();
+        sm = new JpaSessionManager(emf);
+        tx = new JpaTransactionManager(sm);
+
+        tx.beginRead();
     }
 
     @After
     public void tearDown() {
-        if (em != null) {
-            em.clear();
-            em.close();
+
+        if (sm.getCurrentSession().getTransaction().getRollbackOnly()) {
+            tx.rollback();
+        } else {
+            tx.commit();
         }
 
         if (emf != null) {

@@ -114,12 +114,21 @@ public class Bootstrap {
         withdrawView.setPrompt(prompt);
         withdrawView.setTransactionController(withdrawalController);
 
+        // wire recipients controller and view
+        RecipientsController recipientsController = new RecipientsController();
+        RecipientsView recipientsView = new RecipientsView();
+        recipientsView.setRecipientsController(recipientsController);
+        recipientsController.setView(recipientsView);
+        recipientsController.setAuthService(authService);
+        recipientsController.setCustomerService(customerService);
+
         // setup the controller map
         Map<Integer, Controller> controllerMap = new HashMap<>();
         controllerMap.put(UserOptions.GET_BALANCE.getOption(), balanceController);
         controllerMap.put(UserOptions.OPEN_ACCOUNT.getOption(), newAccountController);
         controllerMap.put(UserOptions.DEPOSIT.getOption(), depositController);
         controllerMap.put(UserOptions.WITHDRAW.getOption(), withdrawalController);
+        controllerMap.put(UserOptions.LIST_RECIPIENTS.getOption(), recipientsController);
 
         mainController.setControllerMap(controllerMap);
 

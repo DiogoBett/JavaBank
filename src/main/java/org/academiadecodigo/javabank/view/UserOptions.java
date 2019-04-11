@@ -31,9 +31,14 @@ public enum UserOptions {
     OPEN_ACCOUNT(4, Messages.MENU_OPEN_ACCOUNT),
 
     /**
+     * @see RecipientsView
+     */
+    LIST_RECIPIENTS(5, Messages.MENU_RECIPIENTS),
+
+    /**
      * User option to quit the application
      */
-    QUIT(5, Messages.MENU_QUIT);
+    QUIT(6, Messages.MENU_QUIT);
 
     private int option;
     private String message;

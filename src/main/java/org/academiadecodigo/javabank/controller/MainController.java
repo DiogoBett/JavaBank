@@ -1,5 +1,6 @@
 package org.academiadecodigo.javabank.controller;
 
+import org.academiadecodigo.javabank.model.Customer;
 import org.academiadecodigo.javabank.view.MainView;
 import org.academiadecodigo.javabank.view.Messages;
 import org.academiadecodigo.javabank.view.UserOptions;
@@ -28,7 +29,8 @@ public class MainController extends AbstractController {
      * @return the customer name
      */
     public String getCustomerName() {
-        return authService.getAccessingCustomer().getName();
+        Customer customer = authService.getAccessingCustomer();
+        return customer.getFirstName() + " " + customer.getLastName();
     }
 
     /**

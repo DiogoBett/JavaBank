@@ -1,5 +1,6 @@
 package org.academiadecodigo.javabank.factories;
 
+
 import org.academiadecodigo.javabank.model.account.Account;
 import org.academiadecodigo.javabank.model.account.AccountType;
 import org.academiadecodigo.javabank.model.account.CheckingAccount;

@@ -1,15 +1,17 @@
 package org.academiadecodigo.javabank;
 
 import org.academiadecodigo.javabank.controller.Controller;
-import org.academiadecodigo.javabank.persistence.H2WebServer;
 import org.academiadecodigo.javabank.persistence.JpaBootstrap;
+import org.academiadecodigo.javabank.persistence.TransactionManager;
+import org.academiadecodigo.javabank.persistence.dao.jpa.JpaAccountDao;
+import org.academiadecodigo.javabank.persistence.dao.jpa.JpaCustomerDao;
+import org.academiadecodigo.javabank.persistence.jpa.JpaSessionManager;
+import org.academiadecodigo.javabank.persistence.jpa.JpaTransactionManager;
+import org.academiadecodigo.javabank.services.AccountServiceImpl;
 import org.academiadecodigo.javabank.services.AuthServiceImpl;
-import org.academiadecodigo.javabank.services.jpa.JpaAccountService;
-import org.academiadecodigo.javabank.services.jpa.JpaCustomerService;
+import org.academiadecodigo.javabank.services.CustomerServiceImpl;
 
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import java.sql.SQLException;
 
 public class App {
 
@@ -18,20 +20,31 @@ public class App {
         JpaBootstrap jpa = new JpaBootstrap();
         EntityManagerFactory emf = jpa.start();
 
+        JpaSessionManager sm = new JpaSessionManager(emf);
+        TransactionManager tx = new JpaTransactionManager(sm);
+
         App app = new App();
-        app.bootStrap(emf);
+        app.bootStrap(tx, sm);
 
         jpa.stop();
 
     }
 
-    private void bootStrap(EntityManagerFactory emf) {
+    private void bootStrap(TransactionManager tx, JpaSessionManager sm) {
+
+        AccountServiceImpl accountService = new AccountServiceImpl();
+        accountService.setAccountDao(new JpaAccountDao(sm));
+        accountService.setTransactionManager(tx);
+
+        CustomerServiceImpl customerService = new CustomerServiceImpl();
+        customerService.setCustomerDao(new JpaCustomerDao(sm));
+        customerService.setTransactionManager(tx);
 
         Bootstrap bootstrap = new Bootstrap();
 
         bootstrap.setAuthService(new AuthServiceImpl());
-        bootstrap.setAccountService(new JpaAccountService(emf));
-        bootstrap.setCustomerService(new JpaCustomerService(emf));
+        bootstrap.setAccountService(accountService);
+        bootstrap.setCustomerService(customerService);
 
         Controller controller = bootstrap.wireObjects();
 
