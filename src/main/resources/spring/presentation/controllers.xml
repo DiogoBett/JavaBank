@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="accountfactory" class="org.academiadecodigo.javabank.factories.AccountFactory"/>
+
+    <bean id="depositcontroller" class="org.academiadecodigo.javabank.controller.transaction.DepositController">
+        <property name="view" ref="depositview"/>
+        <property name="customerService" ref="customerService"/>
+        <property name="accountService" ref="accountService"/>
+        <property name="authService" ref="authService"/>
+    </bean>
+
+    <bean id="withdrawcontroller" class="org.academiadecodigo.javabank.controller.transaction.WithdrawalController">
+        <property name="view" ref="withdrawview"/>
+        <property name="customerService" ref="customerService"/>
+        <property name="accountService" ref="accountService"/>
+        <property name="authService" ref="authService"/>
+    </bean>
+
+    <bean id="balancecontroller" class="org.academiadecodigo.javabank.controller.BalanceController">
+        <property name="view" ref="balanceview"/>
+        <property name="customerService" ref="customerService"/>
+        <property name="authService" ref="authService"/>
+    </bean>
+
+    <bean id="logincontroller" class="org.academiadecodigo.javabank.controller.LoginController">
+        <property name="view" ref="loginview"/>
+        <property name="nextController" ref="maincontroller"/>
+        <property name="authService" ref="authService"/>
+    </bean>
+
+    <bean id="newaccountcontroller" class="org.academiadecodigo.javabank.controller.NewAccountController">
+        <property name="view" ref="newaccountview"/>
+        <property name="accountFactory" ref="accountfactory"/>
+        <property name="accountService" ref="accountService"/>
+        <property name="authService" ref="authService"/>
+    </bean>
+
+    <bean id="recipientscontroller" class="org.academiadecodigo.javabank.controller.RecipientsController">
+        <property name="view" ref="recipientsview"/>
+        <property name="customerService" ref="customerService"/>
+        <property name="authService" ref="authService"/>
+    </bean>
+
+    <bean id="maincontroller" class="org.academiadecodigo.javabank.controller.MainController">
+        <property name="view" ref="mainview"/>
+        <property name="controllerMap">
+            <map>
+                <entry key="1" value-ref="balancecontroller"/>
+                <entry key="2" value-ref="depositcontroller"/>
+                <entry key="3" value-ref="withdrawcontroller"/>
+                <entry key="4" value-ref="newaccountcontroller"/>
+                <entry key="5" value-ref="recipientscontroller"/>
+            </map>
+        </property>
+        <property name="authService" ref="authService"/>
+    </bean>
+
+</beans>

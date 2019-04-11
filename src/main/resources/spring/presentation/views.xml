@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <util:constant id="stdin" static-field="java.lang.System.in"/>
+    <util:constant id="stdout" static-field="java.lang.System.out"/>
+
+    <bean id="promptview" class="org.academiadecodigo.bootcamp.Prompt">
+        <constructor-arg name="input" ref="stdin"/>
+        <constructor-arg name="output" ref="stdout"/>
+    </bean>
+
+    <bean id="depositview" class="org.academiadecodigo.javabank.view.AccountTransactionView">
+        <property name="prompt" ref="promptview"/>
+        <property name="transactionController" ref="depositcontroller"/>
+    </bean>
+
+    <bean id="withdrawview" class="org.academiadecodigo.javabank.view.AccountTransactionView">
+        <property name="prompt" ref="promptview"/>
+        <property name="transactionController" ref="withdrawcontroller"/>
+    </bean>
+
+    <bean id="balanceview" class="org.academiadecodigo.javabank.view.BalanceView">
+        <property name="balanceController" ref="balancecontroller"/>
+    </bean>
+
+    <bean id="loginview" class="org.academiadecodigo.javabank.view.LoginView">
+        <property name="prompt" ref="promptview"/>
+        <property name="loginController" ref="logincontroller"/>
+    </bean>
+
+    <bean id="mainview" class="org.academiadecodigo.javabank.view.MainView">
+        <property name="prompt" ref="promptview"/>
+        <property name="mainController" ref="maincontroller"/>
+    </bean>
+
+    <bean id="newaccountview" class="org.academiadecodigo.javabank.view.NewAccountView">
+        <property name="newAccountController" ref="newaccountcontroller"/>
+    </bean>
+
+    <bean id="recipientsview" class="org.academiadecodigo.javabank.view.RecipientsView">
+        <property name="recipientsController" ref="recipientscontroller"/>
+    </bean>
+
+</beans>
