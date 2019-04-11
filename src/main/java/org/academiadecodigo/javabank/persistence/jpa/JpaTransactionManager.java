@@ -9,12 +9,7 @@ public class JpaTransactionManager implements TransactionManager {
 
     private JpaSessionManager sm;
 
-    /**
-     * Initializes a new {@code JPA Transaction Manager} instance given a session manager
-     *
-     * @param sm the session manager
-     */
-    public JpaTransactionManager(JpaSessionManager sm) {
+    public void setSm(JpaSessionManager sm) {
         this.sm = sm;
     }
 
