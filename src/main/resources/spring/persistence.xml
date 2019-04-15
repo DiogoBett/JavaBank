@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="./persistence/persistence-test.xml"/>
+    <import resource="./persistence/persistence-dev.xml"/>
+    <import resource="./persistence/persistence-prod.xml"/>
+
+    <bean id="sessionManager" class="org.academiadecodigo.javabank.persistence.jpa.JpaSessionManager"/>
+
+    <bean id="transactionManager" class="org.academiadecodigo.javabank.persistence.jpa.JpaTransactionManager">
+        <property name="sm" ref="sessionManager"/>
+    </bean>
+
+    <bean id="accountDao" class="org.academiadecodigo.javabank.persistence.dao.jpa.JpaAccountDao">
+        <property name="sm" ref="sessionManager"/>
+    </bean>
+
+    <bean id="customerDao" class="org.academiadecodigo.javabank.persistence.dao.jpa.JpaCustomerDao">
+        <property name="sm" ref="sessionManager"/>
+    </bean>
+
+</beans>

@@ -1,6 +1,6 @@
 package org.academiadecodigo.javabank.services;
 
-import org.academiadecodigo.javabank.model.Customer;
+import org.academiadecodigo.javabank.persistence.model.Customer;
 import org.junit.Before;
 import org.junit.Test;
 

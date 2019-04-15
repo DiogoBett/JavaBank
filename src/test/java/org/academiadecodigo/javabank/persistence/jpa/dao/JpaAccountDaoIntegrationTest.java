@@ -1,8 +1,8 @@
 package org.academiadecodigo.javabank.persistence.jpa.dao;
 
-import org.academiadecodigo.javabank.model.account.Account;
-import org.academiadecodigo.javabank.model.account.AccountType;
-import org.academiadecodigo.javabank.model.account.CheckingAccount;
+import org.academiadecodigo.javabank.persistence.model.account.Account;
+import org.academiadecodigo.javabank.persistence.model.account.AccountType;
+import org.academiadecodigo.javabank.persistence.model.account.CheckingAccount;
 import org.academiadecodigo.javabank.persistence.dao.jpa.JpaAccountDao;
 import org.academiadecodigo.javabank.persistence.jpa.JpaIntegrationTestHelper;
 import org.junit.Before;
@@ -23,7 +23,8 @@ public class JpaAccountDaoIntegrationTest extends JpaIntegrationTestHelper {
     @Before
     public void setup() {
 
-        accountDao = new JpaAccountDao(sm);
+        accountDao = new JpaAccountDao();
+        accountDao.setSm(sm);
 
     }
 

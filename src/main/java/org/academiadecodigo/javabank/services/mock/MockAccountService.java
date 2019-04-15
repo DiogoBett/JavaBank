@@ -1,7 +1,6 @@
 package org.academiadecodigo.javabank.services.mock;
 
-import org.academiadecodigo.javabank.model.account.Account;
-import org.academiadecodigo.javabank.model.account.AccountType;
+import org.academiadecodigo.javabank.persistence.model.account.Account;
 import org.academiadecodigo.javabank.services.AccountService;
 
 /**
@@ -30,6 +29,7 @@ public class MockAccountService extends AbstractMockService<Account> implements 
         modelMap.put(account.getId(), account);
 
         return account.getId();
+
     }
 
     /**
@@ -45,7 +45,8 @@ public class MockAccountService extends AbstractMockService<Account> implements 
     public void withdraw(Integer id, double amount) {
 
         Account account = modelMap.get(id);
-        if (account.getAccountType() == AccountType.SAVINGS) {
+
+        if (!account.canWithdraw()) {
             return;
         }
 

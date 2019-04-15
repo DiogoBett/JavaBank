@@ -1,6 +1,6 @@
 package org.academiadecodigo.javabank.persistence.jpa.dao;
 
-import org.academiadecodigo.javabank.model.Recipient;
+import org.academiadecodigo.javabank.persistence.model.Recipient;
 import org.academiadecodigo.javabank.persistence.TransactionException;
 import org.academiadecodigo.javabank.persistence.dao.jpa.JpaRecipientDao;
 import org.academiadecodigo.javabank.persistence.jpa.JpaSessionManager;
@@ -28,9 +28,11 @@ public class JpaRecipientDaoTest {
 
     @Before
     public void setup() {
+
         sm = mock(JpaSessionManager.class);
         em = mock(EntityManager.class);
-        recipientDao = new JpaRecipientDao(sm);
+        recipientDao = new JpaRecipientDao();
+        recipientDao.setSm(sm);
 
         when(sm.getCurrentSession()).thenReturn(em);
     }

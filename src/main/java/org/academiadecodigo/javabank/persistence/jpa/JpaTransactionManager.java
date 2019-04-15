@@ -10,24 +10,26 @@ public class JpaTransactionManager implements TransactionManager {
     private JpaSessionManager sm;
 
     /**
-     * Initializes a new {@code JPA Transaction Manager} instance given a session manager
+     * Sets the session manager
      *
-     * @param sm the session manager
+     * @param sm the session manager to set
      */
-    public JpaTransactionManager(JpaSessionManager sm) {
+    public void setSm(JpaSessionManager sm) {
         this.sm = sm;
     }
 
     /**
      * @see TransactionManager#beginRead()
      */
+    @Override
     public void beginRead() {
-       sm.startSession();
+        sm.startSession();
     }
 
     /**
      * @see TransactionManager#beginWrite()
      */
+    @Override
     public void beginWrite() {
         sm.getCurrentSession().getTransaction().begin();
     }
@@ -35,6 +37,7 @@ public class JpaTransactionManager implements TransactionManager {
     /**
      * @see TransactionManager#commit()
      */
+    @Override
     public void commit() {
 
         if (sm.getCurrentSession().getTransaction().isActive()) {
@@ -47,6 +50,7 @@ public class JpaTransactionManager implements TransactionManager {
     /**
      * @see TransactionManager#rollback()
      */
+    @Override
     public void rollback() {
 
         if (sm.getCurrentSession().getTransaction().isActive()) {
@@ -56,3 +60,4 @@ public class JpaTransactionManager implements TransactionManager {
         sm.stopSession();
     }
 }
+

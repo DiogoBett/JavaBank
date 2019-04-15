@@ -1,18 +1,18 @@
-package org.academiadecodigo.javabank.persistence.model.account;
+package org.academiadecodigo.javabank.account;
 
-import org.academiadecodigo.javabank.model.account.CheckingAccount;
+import org.academiadecodigo.javabank.persistence.model.account.SavingsAccount;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class CheckingAccountTest {
+public class SavingsAccountTest {
 
-    private CheckingAccount account;
+    private SavingsAccount account;
 
     @Before
     public void setup() {
-        account = new CheckingAccount();
+        account = new SavingsAccount();
     }
 
     @Test
@@ -53,44 +53,53 @@ public class CheckingAccountTest {
     @Test
     public void testDebit() {
 
-        double initialBalance = account.getBalance();
-        double credit = 200;
+        double credit = SavingsAccount.MIN_BALANCE + 100;
         double debit = 100;
 
         // check initial account balance
         account.credit(credit);
-        assertEquals(credit + initialBalance, account.getBalance(), 0);
+        assertEquals(credit, account.getBalance(), 0);
+
+        double balance = account.getBalance();
 
         // debit from the account
         account.debit(debit);
 
         // check if value has been updated
-        assertEquals(credit + initialBalance - debit, account.getBalance(), 0);
+        assertEquals(SavingsAccount.MIN_BALANCE, account.getBalance(), 0);
 
     }
 
-    @Test
-    public void testDebitFail() {
 
-        double initialBalance = account.getBalance();
-        double credit = 100;
+    @Test
+    public void testDebitInsufficientFunds() {
+
+        double credit = SavingsAccount.MIN_BALANCE + 100;
 
         // check initial account balance
         account.credit(credit);
-        assertEquals(credit + initialBalance, account.getBalance(), 0);
+        assertEquals(credit, account.getBalance(), 0);
 
-        // debit from the account
-        account.debit(credit + initialBalance + 100);
+        double maxDebit = account.getBalance() - SavingsAccount.MIN_BALANCE;
 
-        // check if value has not been updated
-        assertEquals(credit + initialBalance, account.getBalance(), 0);
+        // debit more than what is allowed
+        account.debit(maxDebit + 10);
+
+        // confirm that the account is still limited by its MIN_BALANCE
+        assertEquals(credit, account.getBalance(), 0);
     }
 
     @Test
     public void testDebitNegativeValue() {
 
-        double balance = account.getBalance();
+        double credit = SavingsAccount.MIN_BALANCE + 100;
         double debit = -100;
+
+        // check initial account balance
+        account.credit(credit);
+        assertEquals(credit, account.getBalance(), 0);
+
+        double balance = account.getBalance();
 
         account.debit(debit);
         assertEquals(balance, account.getBalance(), 0);

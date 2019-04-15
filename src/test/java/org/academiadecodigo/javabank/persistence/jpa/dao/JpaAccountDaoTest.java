@@ -1,8 +1,8 @@
 package org.academiadecodigo.javabank.persistence.jpa.dao;
 
-import org.academiadecodigo.javabank.model.account.Account;
-import org.academiadecodigo.javabank.model.account.CheckingAccount;
-import org.academiadecodigo.javabank.model.account.SavingsAccount;
+import org.academiadecodigo.javabank.persistence.model.account.Account;
+import org.academiadecodigo.javabank.persistence.model.account.CheckingAccount;
+import org.academiadecodigo.javabank.persistence.model.account.SavingsAccount;
 import org.academiadecodigo.javabank.persistence.TransactionException;
 import org.academiadecodigo.javabank.persistence.dao.jpa.JpaAccountDao;
 import org.academiadecodigo.javabank.persistence.jpa.JpaSessionManager;
@@ -31,7 +31,8 @@ public class JpaAccountDaoTest {
 
         sm = mock(JpaSessionManager.class);
         em = mock(EntityManager.class);
-        customerDao = new JpaAccountDao(sm);
+        customerDao = new JpaAccountDao();
+        customerDao.setSm(sm);
 
         when(sm.getCurrentSession()).thenReturn(em);
 
@@ -49,6 +50,7 @@ public class JpaAccountDaoTest {
         when(criteriaBuilder.createQuery(Account.class)).thenReturn(criteriaQuery);
         when(em.createQuery(criteriaQuery)).thenReturn(typedQuery);
         when(em.createQuery(anyString(), any(Class.class))).thenReturn(typedQuery);
+        when(em.createQuery(any(CriteriaQuery.class))).thenReturn(typedQuery);
         when(typedQuery.getResultList()).thenReturn(mockAccounts);
 
         // exercise
@@ -64,6 +66,7 @@ public class JpaAccountDaoTest {
 
     @Test(expected = TransactionException.class)
     public void testFindAllFail() {
+
 
         // setup
         List<Account> mockAccounts = new ArrayList<>();

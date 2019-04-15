@@ -1,22 +1,34 @@
 package org.academiadecodigo.javabank.persistence.jpa;
 
+import org.academiadecodigo.javabank.Config;
 import org.junit.After;
 import org.junit.Before;
+import org.springframework.context.support.GenericXmlApplicationContext;
 
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 public class JpaIntegrationTestHelper {
 
-    protected static EntityManagerFactory emf;
-    protected static JpaSessionManager sm;
-    protected static JpaTransactionManager tx;
+    protected EntityManagerFactory emf;
+    protected JpaSessionManager sm;
+    protected JpaTransactionManager tx;
+    GenericXmlApplicationContext ctx;
 
     @Before
     public void init() {
-        emf = Persistence.createEntityManagerFactory("test");
-        sm = new JpaSessionManager(emf);
-        tx = new JpaTransactionManager(sm);
+
+        ctx = new GenericXmlApplicationContext();
+        ctx.getEnvironment().setActiveProfiles("test");
+        ctx.load(Config.SPRING_CONFIG);
+        ctx.refresh();
+
+        emf = ctx.getBean(EntityManagerFactory.class);
+
+        sm = new JpaSessionManager();
+        tx = new JpaTransactionManager();
+
+        sm.setEmf(emf);
+        tx.setSm(sm);
 
         tx.beginRead();
     }
@@ -33,5 +45,7 @@ public class JpaIntegrationTestHelper {
         if (emf != null) {
             emf.close();
         }
+
+        ctx.destroy();
     }
 }

@@ -1,7 +1,7 @@
 package org.academiadecodigo.javabank.view;
 
 import org.academiadecodigo.javabank.controller.RecipientsController;
-import org.academiadecodigo.javabank.model.Recipient;
+import org.academiadecodigo.javabank.persistence.model.Recipient;
 
 import java.util.List;
 

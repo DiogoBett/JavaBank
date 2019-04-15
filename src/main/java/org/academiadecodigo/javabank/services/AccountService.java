@@ -1,7 +1,6 @@
 package org.academiadecodigo.javabank.services;
 
-
-import org.academiadecodigo.javabank.model.account.Account;
+import org.academiadecodigo.javabank.persistence.model.account.Account;
 
 /**
  * Common interface for account services, provides methods to manage accounts and perform account transactions

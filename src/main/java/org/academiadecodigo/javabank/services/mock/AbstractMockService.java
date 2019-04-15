@@ -1,7 +1,6 @@
 package org.academiadecodigo.javabank.services.mock;
 
-
-import org.academiadecodigo.javabank.model.AbstractModel;
+import org.academiadecodigo.javabank.persistence.model.AbstractModel;
 
 import java.util.Collections;
 import java.util.HashMap;

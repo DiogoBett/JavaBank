@@ -1,8 +1,8 @@
 package org.academiadecodigo.javabank.services;
 
-import org.academiadecodigo.javabank.model.account.Account;
-import org.academiadecodigo.javabank.model.account.CheckingAccount;
-import org.academiadecodigo.javabank.model.account.SavingsAccount;
+import org.academiadecodigo.javabank.persistence.model.account.Account;
+import org.academiadecodigo.javabank.persistence.model.account.CheckingAccount;
+import org.academiadecodigo.javabank.persistence.model.account.SavingsAccount;
 import org.academiadecodigo.javabank.persistence.TransactionException;
 import org.academiadecodigo.javabank.persistence.TransactionManager;
 import org.academiadecodigo.javabank.persistence.dao.AccountDao;
@@ -147,7 +147,8 @@ public class AccountServiceImplTest {
         double amount = 100.5;
         Account fakeAccount = mock(Account.class);
         when(accountDao.findById(fakeId)).thenReturn(fakeAccount);
-        when(accountDao.findById(fakeId).canWithdraw()).thenReturn(true);
+
+        when(fakeAccount.canWithdraw()).thenReturn(true);
 
         // exercise
         accountService.withdraw(fakeId, amount);

@@ -1,8 +1,7 @@
 package org.academiadecodigo.javabank.persistence.dao.jpa;
 
-import org.academiadecodigo.javabank.model.account.Account;
+import org.academiadecodigo.javabank.persistence.model.account.Account;
 import org.academiadecodigo.javabank.persistence.dao.AccountDao;
-import org.academiadecodigo.javabank.persistence.jpa.JpaSessionManager;
 
 /**
  * A JPA {@link AccountDao} implementation
@@ -10,9 +9,9 @@ import org.academiadecodigo.javabank.persistence.jpa.JpaSessionManager;
 public class JpaAccountDao extends GenericJpaDao<Account> implements AccountDao {
 
     /**
-     * @see GenericJpaDao#GenericJpaDao(JpaSessionManager, Class)
+     * @see GenericJpaDao#GenericJpaDao(Class)
      */
-    public JpaAccountDao(JpaSessionManager sm) {
-        super(sm, Account.class);
+    public JpaAccountDao() {
+        super(Account.class);
     }
 }

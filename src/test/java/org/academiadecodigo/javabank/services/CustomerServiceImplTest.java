@@ -1,9 +1,9 @@
 package org.academiadecodigo.javabank.services;
 
-import org.academiadecodigo.javabank.model.Customer;
-import org.academiadecodigo.javabank.model.Recipient;
-import org.academiadecodigo.javabank.model.account.Account;
-import org.academiadecodigo.javabank.model.account.CheckingAccount;
+import org.academiadecodigo.javabank.persistence.model.Customer;
+import org.academiadecodigo.javabank.persistence.model.Recipient;
+import org.academiadecodigo.javabank.persistence.model.account.Account;
+import org.academiadecodigo.javabank.persistence.model.account.CheckingAccount;
 import org.academiadecodigo.javabank.persistence.TransactionException;
 import org.academiadecodigo.javabank.persistence.TransactionManager;
 import org.academiadecodigo.javabank.persistence.dao.CustomerDao;
@@ -151,7 +151,7 @@ public class CustomerServiceImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testGetCustomerAccountIdsInvalidId() {
+    public void testListCustomerAccountIdsInvalidId() {
 
         // setup
         when(customerDao.findById(anyInt())).thenReturn(null);

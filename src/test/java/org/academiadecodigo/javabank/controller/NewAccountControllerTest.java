@@ -1,9 +1,9 @@
 package org.academiadecodigo.javabank.controller;
 
 import org.academiadecodigo.javabank.factories.AccountFactory;
-import org.academiadecodigo.javabank.model.Customer;
-import org.academiadecodigo.javabank.model.account.Account;
-import org.academiadecodigo.javabank.model.account.AccountType;
+import org.academiadecodigo.javabank.persistence.model.Customer;
+import org.academiadecodigo.javabank.persistence.model.account.Account;
+import org.academiadecodigo.javabank.persistence.model.account.AccountType;
 import org.academiadecodigo.javabank.services.AccountService;
 import org.academiadecodigo.javabank.services.AuthService;
 import org.academiadecodigo.javabank.view.View;

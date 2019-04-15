@@ -1,6 +1,6 @@
 package org.academiadecodigo.javabank.persistence.dao;
 
-import org.academiadecodigo.javabank.model.account.Account;
+import org.academiadecodigo.javabank.persistence.model.account.Account;
 
 /**
  * Common interface for account data access objects

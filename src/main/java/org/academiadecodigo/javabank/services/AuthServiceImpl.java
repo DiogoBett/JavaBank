@@ -1,15 +1,14 @@
 package org.academiadecodigo.javabank.services;
 
-
-import org.academiadecodigo.javabank.model.Customer;
+import org.academiadecodigo.javabank.persistence.model.Customer;
 
 /**
  * An {@link AuthService} implementation
  */
 public class AuthServiceImpl implements AuthService {
 
-    private CustomerService customerService;
     private Integer accessingCustomerId;
+    private CustomerService customerService;
 
     /**
      * Sets the customer service

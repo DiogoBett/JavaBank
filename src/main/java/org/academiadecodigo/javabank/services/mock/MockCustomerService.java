@@ -1,8 +1,8 @@
 package org.academiadecodigo.javabank.services.mock;
 
-import org.academiadecodigo.javabank.model.Customer;
-import org.academiadecodigo.javabank.model.Recipient;
-import org.academiadecodigo.javabank.model.account.Account;
+import org.academiadecodigo.javabank.persistence.model.Customer;
+import org.academiadecodigo.javabank.persistence.model.Recipient;
+import org.academiadecodigo.javabank.persistence.model.account.Account;
 import org.academiadecodigo.javabank.services.CustomerService;
 
 import java.util.HashSet;
@@ -26,9 +26,9 @@ public class MockCustomerService extends AbstractMockService<Customer> implement
      * @see CustomerService#getBalance(Integer)
      */
     @Override
-    public double getBalance(Integer id) {
+    public double getBalance(Integer customerId) {
 
-        List<Account> accounts = modelMap.get(id).getAccounts();
+        List<Account> accounts = modelMap.get(customerId).getAccounts();
 
         double balance = 0;
         for (Account account : accounts) {
@@ -36,6 +36,7 @@ public class MockCustomerService extends AbstractMockService<Customer> implement
         }
 
         return balance;
+
     }
 
     /**

@@ -21,7 +21,8 @@ public class JpaTransactionManagerTest {
         transaction = mock(EntityTransaction.class);
         sm = mock(JpaSessionManager.class);
         em = mock(EntityManager.class);
-        tx = new JpaTransactionManager(sm);
+        tx = new JpaTransactionManager();
+        tx.setSm(sm);
 
         when(sm.getCurrentSession()).thenReturn(em);
         when(em.getTransaction()).thenReturn(transaction);

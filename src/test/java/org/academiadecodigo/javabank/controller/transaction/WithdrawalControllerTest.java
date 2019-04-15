@@ -1,6 +1,6 @@
 package org.academiadecodigo.javabank.controller.transaction;
 
-import org.academiadecodigo.javabank.model.Customer;
+import org.academiadecodigo.javabank.persistence.model.Customer;
 import org.academiadecodigo.javabank.services.AccountService;
 import org.academiadecodigo.javabank.services.AuthService;
 import org.academiadecodigo.javabank.services.CustomerService;

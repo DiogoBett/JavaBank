@@ -1,8 +1,7 @@
 package org.academiadecodigo.javabank.persistence.dao.jpa;
 
-import org.academiadecodigo.javabank.model.Recipient;
+import org.academiadecodigo.javabank.persistence.model.Recipient;
 import org.academiadecodigo.javabank.persistence.dao.RecipientDao;
-import org.academiadecodigo.javabank.persistence.jpa.JpaSessionManager;
 
 /**
  * A JPA {@link RecipientDao} implementation
@@ -10,9 +9,9 @@ import org.academiadecodigo.javabank.persistence.jpa.JpaSessionManager;
 public class JpaRecipientDao extends GenericJpaDao<Recipient> implements RecipientDao {
 
     /**
-     * @see GenericJpaDao#GenericJpaDao(JpaSessionManager, Class)
+     * @see GenericJpaDao#GenericJpaDao(Class)
      */
-    public JpaRecipientDao(JpaSessionManager sm) {
-        super(sm, Recipient.class);
+    public JpaRecipientDao() {
+        super(Recipient.class);
     }
 }
