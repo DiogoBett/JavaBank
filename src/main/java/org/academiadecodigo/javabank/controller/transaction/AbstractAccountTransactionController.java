@@ -40,4 +40,5 @@ public abstract class AbstractAccountTransactionController extends AbstractContr
     public Set<Integer> getAccountIds() {
         return customerService.listCustomerAccountIds(authService.getAccessingCustomer().getId());
     }
+
 }

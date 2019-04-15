@@ -2,7 +2,6 @@ package org.academiadecodigo.javabank.view;
 
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
 import org.academiadecodigo.javabank.controller.MainController;
-
 /**
  * A view used to display the main menu
  *

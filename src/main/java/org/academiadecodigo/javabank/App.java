@@ -14,6 +14,9 @@ public class App {
 
     private void bootStrap() {
 
+        String profile = getProfile();
+        System.out.println("#### Active Profiles " + profile + " ####");
+
         GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
         ctx.getEnvironment().setActiveProfiles(getProfile());
         ctx.load(Config.SPRING_CONFIG);
