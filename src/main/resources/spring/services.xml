@@ -8,12 +8,10 @@
     </bean>
 
     <bean id="customerService" class="org.academiadecodigo.javabank.services.CustomerServiceImpl">
-        <property name="transactionManager" ref="transactionManager"/>
         <property name="customerDao" ref="customerDao"/>
     </bean>
 
     <bean id="accountService" class="org.academiadecodigo.javabank.services.AccountServiceImpl">
-        <property name="transactionManager" ref="transactionManager"/>
         <property name="accountDao" ref="accountDao"/>
     </bean>
 

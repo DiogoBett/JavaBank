@@ -1,10 +1,10 @@
 package org.academiadecodigo.javabank.services;
 
+import org.academiadecodigo.javabank.persistence.dao.CustomerDao;
 import org.academiadecodigo.javabank.persistence.model.Customer;
 import org.academiadecodigo.javabank.persistence.model.Recipient;
 import org.academiadecodigo.javabank.persistence.model.account.Account;
-import org.academiadecodigo.javabank.persistence.TransactionManager;
-import org.academiadecodigo.javabank.persistence.dao.CustomerDao;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,9 +14,9 @@ import java.util.Set;
 /**
  * An {@link CustomerService} implementation
  */
+@Transactional
 public class CustomerServiceImpl implements CustomerService {
 
-    private TransactionManager tx;
     private CustomerDao customerDao;
 
     /**
@@ -29,28 +29,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     /**
-     * Sets the transaction manager
-     *
-     * @param tx the transaction manager to set
-     */
-    public void setTransactionManager(TransactionManager tx) {
-        this.tx = tx;
-    }
-
-    /**
      * @see CustomerService#get(Integer)
      */
     @Override
     public Customer get(Integer id) {
 
-        try {
-
-            tx.beginRead();
-            return customerDao.findById(id);
-
-        } finally {
-            tx.commit();
-        }
+        return customerDao.findById(id);
     }
 
     /**
@@ -59,28 +43,21 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public double getBalance(Integer id) {
 
-        try {
+        Customer customer = customerDao.findById(id);
 
-            tx.beginRead();
-
-            Customer customer = customerDao.findById(id);
-
-            if (customer == null) {
-                throw new IllegalArgumentException("Customer does not exists");
-            }
-
-            List<Account> accounts = customer.getAccounts();
-
-            double balance = 0;
-            for (Account account : accounts) {
-                balance += account.getBalance();
-            }
-
-            return balance;
-
-        } finally {
-            tx.commit();
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer does not exists");
         }
+
+        List<Account> accounts = customer.getAccounts();
+
+        double balance = 0;
+        for (Account account : accounts) {
+            balance += account.getBalance();
+        }
+
+        return balance;
+
     }
 
     /**
@@ -89,28 +66,21 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Set<Integer> listCustomerAccountIds(Integer id) {
 
-        try {
+        Customer customer = customerDao.findById(id);
 
-            tx.beginRead();
-
-            Customer customer = customerDao.findById(id);
-
-            if (customer == null) {
-                throw new IllegalArgumentException("Customer does not exists");
-            }
-
-            Set<Integer> accountIds = new HashSet<>();
-            List<Account> accounts = customer.getAccounts();
-
-            for (Account account : accounts) {
-                accountIds.add(account.getId());
-            }
-
-            return accountIds;
-
-        } finally {
-            tx.commit();
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer does not exists");
         }
+
+        Set<Integer> accountIds = new HashSet<>();
+        List<Account> accounts = customer.getAccounts();
+
+        for (Account account : accounts) {
+            accountIds.add(account.getId());
+        }
+
+        return accountIds;
+
     }
 
     /**
@@ -119,19 +89,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<Recipient> listRecipients(Integer id) {
 
-        try {
-
-            tx.beginRead();
-
-            Customer customer = customerDao.findById(id);
-            if (customer == null) {
-                throw new IllegalArgumentException("Customer does not exists");
-            }
-
-            return new ArrayList<>(customerDao.findById(id).getRecipients());
-
-        } finally {
-            tx.commit();
+        Customer customer = customerDao.findById(id);
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer does not exists");
         }
+
+        return new ArrayList<>(customerDao.findById(id).getRecipients());
+
     }
 }
