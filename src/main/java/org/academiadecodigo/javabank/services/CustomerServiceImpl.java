@@ -4,6 +4,8 @@ import org.academiadecodigo.javabank.persistence.model.Customer;
 import org.academiadecodigo.javabank.persistence.model.Recipient;
 import org.academiadecodigo.javabank.persistence.model.account.Account;
 import org.academiadecodigo.javabank.persistence.dao.CustomerDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.Set;
 /**
  * An {@link CustomerService} implementation
  */
+@Service
 public class CustomerServiceImpl implements CustomerService {
 
     private CustomerDao customerDao;
@@ -23,8 +26,14 @@ public class CustomerServiceImpl implements CustomerService {
      *
      * @param customerDao the account DAO to set
      */
+    @Autowired
     public void setCustomerDao(CustomerDao customerDao) {
         this.customerDao = customerDao;
+    }
+
+    @Override
+    public List<Customer> getCustomers() {
+        return customerDao.findAll();
     }
 
     /**

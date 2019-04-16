@@ -22,6 +22,12 @@ public class MockCustomerService extends AbstractMockService<Customer> implement
         return modelMap.get(id);
     }
 
+
+    @Override
+    public List<Customer> getCustomers() {
+        return null;
+    }
+
     /**
      * @see CustomerService#getBalance(Integer)
      */

@@ -3,6 +3,7 @@
     <groupId>org.academiadecodigo.javabank</groupId>
     <artifactId>javabank-step8-spring.tx</artifactId>
     <version>0.0.1</version>
+    <packaging>war</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -156,9 +157,8 @@
                 <version>2.2</version>
                 <configuration>
                     <url>http://localhost:8080/manager/text</url>
-                    <!-- server defined in ~/.m2/settings.xml -->
                     <server>tomcat</server>
-                    <path>/hello</path>
+                    <path>/javabank</path>
                 </configuration>
             </plugin>
 

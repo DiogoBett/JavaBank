@@ -2,6 +2,7 @@ package org.academiadecodigo.javabank.persistence.dao.jpa;
 
 import org.academiadecodigo.javabank.persistence.model.Model;
 import org.academiadecodigo.javabank.persistence.dao.Dao;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,6 +16,7 @@ import java.util.List;
  * @param <T> the model type
  * @see Dao
  */
+@Repository
 public abstract class GenericJpaDao<T extends Model> implements Dao<T> {
 
     protected Class<T> modelType;
