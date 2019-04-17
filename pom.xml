@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.academiadecodigo.javabank</groupId>
-    <artifactId>javabank-step9-spring-mvc</artifactId>
+    <artifactId>javabank-step10-show-delete</artifactId>
     <version>0.0.1</version>
     <packaging>war</packaging>
     <name>Java Bank Webapp</name>
@@ -105,7 +105,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <version> 3.1.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -139,7 +139,7 @@
                 <configuration>
                     <url>http://localhost:8080/manager/text</url>
                     <server>tomcat</server>
-                    <path>/javabank</path>
+                    <path>/javabank2</path>
                 </configuration>
             </plugin>
 

@@ -137,49 +137,26 @@ public class Customer extends AbstractModel {
         return recipients;
     }
 
-    /**
-     * Adds a new account to the customer
-     *
-     * @param account the account to add
-     */
     public void addAccount(Account account) {
         accounts.add(account);
         account.setCustomer(this);
     }
 
-    /**
-     * Removes an account from the customer
-     *
-     * @param account the account to remove
-     */
     public void removeAccount(Account account) {
         accounts.remove(account);
         account.setCustomer(null);
     }
 
-    /**
-     * Adds a new recipient to the customer
-     *
-     * @param recipient the recipient to add
-     */
     public void addRecipient(Recipient recipient) {
         recipients.add(recipient);
         recipient.setCustomer(this);
     }
 
-    /**
-     * Removes a recipient from the customer
-     *
-     * @param recipient the recipient to remove
-     */
     public void removeRecipient(Recipient recipient) {
         recipients.remove(recipient);
         recipient.setCustomer(null);
     }
 
-    /**
-     * @see Object#toString()
-     */
     @Override
     public String toString() {
 

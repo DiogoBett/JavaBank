@@ -3,15 +3,17 @@ package org.academiadecodigo.javabank.services;
 import org.academiadecodigo.javabank.persistence.model.Customer;
 import org.academiadecodigo.javabank.persistence.model.Recipient;
 import org.academiadecodigo.javabank.persistence.model.account.Account;
+import org.academiadecodigo.javabank.persistence.dao.AccountDao;
 import org.academiadecodigo.javabank.persistence.dao.CustomerDao;
+import org.academiadecodigo.javabank.persistence.dao.RecipientDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
+import static org.academiadecodigo.javabank.errors.ErrorMessage.*;
 
 /**
  * An {@link CustomerService} implementation
@@ -20,6 +22,8 @@ import java.util.Set;
 public class CustomerServiceImpl implements CustomerService {
 
     private CustomerDao customerDao;
+    private RecipientDao recipientDao;
+    private AccountDao accountDao;
 
     /**
      * Sets the customer data access object
@@ -32,9 +36,28 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     /**
+     * Sets the recipient data access object
+     *
+     * @param recipientDao the recipient DAO to set
+     */
+    @Autowired
+    public void setRecipientDao(RecipientDao recipientDao) {
+        this.recipientDao = recipientDao;
+    }
+
+    /**
+     * Sets the account data access object
+     *
+     * @param accountDao the account DAO to set
+     */
+    @Autowired
+    public void setAccountDao(AccountDao accountDao) {
+        this.accountDao = accountDao;
+    }
+
+    /**
      * @see CustomerService#get(Integer)
      */
-    @Override
     public Customer get(Integer id) {
         return customerDao.findById(id);
     }
@@ -48,7 +71,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerDao.findById(id);
 
         if (customer == null) {
-            throw new IllegalArgumentException("Customer does not exists");
+            throw new IllegalArgumentException(CUSTOMER_NOT_FOUND);
         }
 
         List<Account> accounts = customer.getAccounts();
@@ -62,33 +85,20 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     /**
+     * @see CustomerService#delete(Integer)
+     */
+    @Transactional
+    @Override
+    public void delete(Integer id) {
+        customerDao.delete(id);
+    }
+
+    /**
      * @see CustomerService#list()
      */
     @Override
     public List<Customer> list() {
         return customerDao.findAll();
-    }
-
-    /**
-     * @see CustomerService#listCustomerAccountIds(Integer)
-     */
-    @Override
-    public Set<Integer> listCustomerAccountIds(Integer id) {
-
-        Customer customer = customerDao.findById(id);
-
-        if (customer == null) {
-            throw new IllegalArgumentException("Customer does not exist");
-        }
-
-        Set<Integer> accountIds = new HashSet<>();
-        List<Account> accounts = customer.getAccounts();
-
-        for (Account account : accounts) {
-            accountIds.add(account.getId());
-        }
-
-        return accountIds;
     }
 
     /**
@@ -100,13 +110,39 @@ public class CustomerServiceImpl implements CustomerService {
 
         // check then act logic requires transaction,
         // event if read only
-
         Customer customer = customerDao.findById(id);
 
         if (customer == null) {
-            throw new IllegalArgumentException("Customer does not exists");
+            throw new IllegalArgumentException(CUSTOMER_NOT_FOUND);
         }
 
         return new ArrayList<>(customerDao.findById(id).getRecipients());
+    }
+
+    /**
+     * @see CustomerService#removeRecipient(Integer, Integer)
+     */
+    @Transactional
+    @Override
+    public void removeRecipient(Integer id, Integer recipientId) {
+
+        Customer customer = customerDao.findById(id);
+
+        Recipient recipient = recipientDao.findById(recipientId);
+
+        if (customer == null) {
+            throw new IllegalArgumentException(CUSTOMER_NOT_FOUND);
+        }
+
+        if (recipient == null) {
+            throw new IllegalArgumentException(RECIPIENT_NOT_FOUND);
+        }
+
+        if (!recipient.getCustomer().getId().equals(id)) {
+            throw new IllegalArgumentException(CUSTOMER_RECIPIENT_NOT_FOUND);
+        }
+
+        customer.removeRecipient(recipient);
+        customerDao.saveOrUpdate(customer);
     }
 }

@@ -9,7 +9,6 @@ import javax.persistence.*;
  * A generic account model entity to be used as a base for concrete types of accounts
  */
 @Entity
-@Table(name = "account")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "account_type")
 public abstract class Account extends AbstractModel {

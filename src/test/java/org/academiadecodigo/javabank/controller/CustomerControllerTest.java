@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -60,5 +61,52 @@ public class CustomerControllerTest {
                 .andExpect(model().attribute("customers", hasSize(2)));
 
         verify(customerService, times(3)).list();
+    }
+
+    @Test
+    public void testShowCustomer() throws Exception {
+
+        int fakeId = 999;
+        Customer customer = new Customer();
+        customer.setId(fakeId);
+        customer.setFirstName("Rui");
+        customer.setLastName("Ferrao");
+        customer.setEmail("mail@gmail.com");
+        customer.setPhone("99999914143");
+
+        when(customerService.get(fakeId)).thenReturn(customer);
+
+        mockMvc.perform(get("/customer/" + fakeId))
+                .andExpect(status().isOk())
+                .andExpect(view().name("customer/show"))
+                .andExpect(model().attribute("customer", equalTo(customer)));
+
+        verify(customerService, times(1)).get(fakeId);
+
+    }
+
+    @Test
+    public void testDeleteCustomer() throws Exception {
+
+        int fakeId = 9999;
+
+        mockMvc.perform(get("/customer/" + fakeId + "/delete/"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/customer/list"));
+
+        verify(customerService, times(1)).delete(fakeId);
+    }
+
+    @Test
+    public void testDeleteRecipient() throws Exception {
+
+        int fakeCustomerId = 9998;
+        int fakeRecipientId = 9999;
+
+        mockMvc.perform(get("/customer/" + fakeCustomerId + "/recipient/" + fakeRecipientId + "/delete/"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/customer/" + fakeCustomerId));
+
+        verify(customerService, times(1)).removeRecipient(fakeCustomerId, fakeRecipientId);
     }
 }

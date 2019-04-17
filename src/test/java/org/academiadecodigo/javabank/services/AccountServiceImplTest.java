@@ -16,11 +16,10 @@ public class AccountServiceImplTest {
     public void setup() {
 
         accountDao = mock(AccountDao.class);
-
         accountService = new AccountServiceImpl();
         accountService.setAccountDao(accountDao);
-
     }
+
 
     @Test
     public void testDeposit() {
@@ -102,7 +101,6 @@ public class AccountServiceImplTest {
         verify(fakeDstAccount, times(1)).canCredit(amount);
         verify(fakeSrcAccount, times(1)).debit(amount);
         verify(fakeDstAccount, times(1)).credit(amount);
-
     }
 
     @Test
@@ -126,7 +124,6 @@ public class AccountServiceImplTest {
         verify(accountDao, times(1)).saveOrUpdate(fakeSrcAccount);
         verify(accountDao, times(1)).saveOrUpdate(fakeDstAccount);
         verify(fakeSrcAccount, times(1)).canDebit(amount);
-
     }
 
     @Test
@@ -150,7 +147,6 @@ public class AccountServiceImplTest {
         verify(accountDao, times(1)).saveOrUpdate(fakeSrcAccount);
         verify(accountDao, times(1)).saveOrUpdate(fakeDstAccount);
         verify(fakeDstAccount, times(1)).canCredit(amount);
-
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -166,7 +162,6 @@ public class AccountServiceImplTest {
 
         // exercise
         accountService.transfer(fakeSrcId, fakeDstId, amount);
-
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -182,7 +177,5 @@ public class AccountServiceImplTest {
 
         // exercise
         accountService.transfer(fakeSrcId, fakeDstId, amount);
-
     }
-
 }

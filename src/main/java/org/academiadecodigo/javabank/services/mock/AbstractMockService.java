@@ -8,7 +8,6 @@ import java.util.Map;
 
 /**
  * A generic mock service to be used as a base for concrete mock service implementations
- *
  * @param <T> the model type
  */
 public abstract class AbstractMockService<T extends AbstractModel> {

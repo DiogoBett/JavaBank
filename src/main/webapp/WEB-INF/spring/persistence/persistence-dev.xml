@@ -37,7 +37,6 @@
                 <entry key="hibernate.hbm2ddl.import_files" value="db/test-data.sql"/>
                 <entry key="hibernate.hbm2ddl.import_files_sql_extractor"
                        value="org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor"/>
-
             </map>
         </property>
     </bean>
