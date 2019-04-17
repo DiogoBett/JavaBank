@@ -11,6 +11,6 @@ public class MainController {
     @RequestMapping(method = RequestMethod.GET, value = "/")
     public String homepage(Model model) {
 
-        return "list";
+        return "redirect:/customer/list";
     }
 }

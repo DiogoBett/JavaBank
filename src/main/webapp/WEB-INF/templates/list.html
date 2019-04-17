@@ -8,15 +8,22 @@
 </head>
 <body>
 <center>
-<div>
-    <h2>Customer List</h2>
-    <table>
+
+    <div class="page-header">
+        <h1> Customer List
+            <small> - JavaBank</small>
+        </h1>
+    </div>
+
+    <table class="table">
         <tr>
             <th>Id</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Show</th>
+            <th>Delete</th>
         </tr>
         <tr th:each="customer : ${customers}">
             <td th:text="${customer.id}"></td>
@@ -24,9 +31,11 @@
             <td th:text="${customer.lastName}"></td>
             <td th:text="${customer.email}"></td>
             <td th:text="${customer.phone}"></td>
+            <td th:text="${customer.id}"><a href="http://localhost:8080/javabank/customer/{id}">View</a></td>
+            <td><a href="">Delete</a></td>
         </tr>
     </table>
-</div>
+
 </center>
 </body>
 </html>
