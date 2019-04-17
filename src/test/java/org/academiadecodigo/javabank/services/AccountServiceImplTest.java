@@ -1,13 +1,10 @@
 package org.academiadecodigo.javabank.services;
 
 import org.academiadecodigo.javabank.persistence.model.account.Account;
-import org.academiadecodigo.javabank.persistence.model.account.CheckingAccount;
-import org.academiadecodigo.javabank.persistence.model.account.SavingsAccount;
 import org.academiadecodigo.javabank.persistence.dao.AccountDao;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class AccountServiceImplTest {
@@ -23,40 +20,6 @@ public class AccountServiceImplTest {
         accountService = new AccountServiceImpl();
         accountService.setAccountDao(accountDao);
 
-    }
-
-    @Test
-    public void testAddChecking() {
-
-        // setup
-        int fakeId = 9999;
-        Account fakeAccount = mock(Account.class);
-        when(fakeAccount.getId()).thenReturn(fakeId);
-        when(accountDao.saveOrUpdate(any(Account.class))).thenReturn(fakeAccount);
-
-        // exercise
-        int id = accountService.add(new CheckingAccount());
-
-        // verify
-        assertEquals(fakeId, id);
-
-
-    }
-
-    @Test
-    public void testAddSavings() {
-
-        // setup
-        int fakeId = 9999;
-        Account fakeAccount = mock(Account.class);
-        when(fakeAccount.getId()).thenReturn(fakeId);
-        when(accountDao.saveOrUpdate(any(Account.class))).thenReturn(fakeAccount);
-
-        // exercise
-        int id = accountService.add(new SavingsAccount());
-
-        // verify
-        assertEquals(fakeId, id);
     }
 
     @Test
@@ -93,7 +56,7 @@ public class AccountServiceImplTest {
         // setup
         int fakeId = 1;
         double amount = 100.5;
-        Account fakeAccount = spy(Account.class);
+        Account fakeAccount = mock(Account.class);
         when(accountDao.findById(fakeId)).thenReturn(fakeAccount);
 
         // exercise

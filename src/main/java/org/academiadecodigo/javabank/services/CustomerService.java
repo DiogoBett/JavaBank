@@ -28,6 +28,13 @@ public interface CustomerService {
     double getBalance(Integer id);
 
     /**
+     * Gets a list of the customers
+     *
+     * @return the customers list
+     */
+    List<Customer> list();
+
+    /**
      * Gets the set of customer account ids
      *
      * @param id the customer id

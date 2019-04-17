@@ -16,14 +16,6 @@ public interface AccountService {
     Account get(Integer id);
 
     /**
-     * Adds an account to the service
-     *
-     * @param account the account to add
-     * @return the account id
-     */
-    Integer add(Account account);
-
-    /**
      * Perform an {@link Account} deposit
      *
      * @param id     the id of the account

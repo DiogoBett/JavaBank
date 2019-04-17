@@ -5,6 +5,7 @@ import org.academiadecodigo.javabank.persistence.model.Recipient;
 import org.academiadecodigo.javabank.persistence.model.account.Account;
 import org.academiadecodigo.javabank.services.CustomerService;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,6 +38,14 @@ public class MockCustomerService extends AbstractMockService<Customer> implement
 
         return balance;
 
+    }
+
+    /**
+     * @see CustomerService#list()
+     */
+    @Override
+    public List<Customer> list() {
+        return new ArrayList<>(modelMap.values());
     }
 
     /**

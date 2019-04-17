@@ -5,7 +5,8 @@ import org.academiadecodigo.javabank.persistence.model.Model;
 import java.util.List;
 
 /**
- * Base interface for data access objects, provides an abstraction over the persistence layer to access data
+ * Base interface for data access objects, provides methods to manage models
+ *
  * @param <T> the model type
  */
 public interface Dao<T extends Model> {

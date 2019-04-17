@@ -17,5 +17,5 @@ INSERT INTO account(ACCOUNT_TYPE, ID, CREATIONTIME, UPDATETIME, VERSION, BALANCE
 
 DELETE FROM recipient;
 INSERT INTO recipient(ID, CREATIONTIME, UPDATETIME, VERSION, ACCOUNTNUMBER, NAME, EMAIL, DESCRIPTION, PHONE, CUSTOMER_ID) VALUES
-(1, TIMESTAMP '2017-10-10 08:45:56.468', TIMESTAMP '2017-10-10 08:45:56.468', 1, 3, 'Sergio Gouveia', 'sergio@gmail.com', 'My colleague Sergio from A/C', '777888', 1),
-(2, TIMESTAMP '2017-10-10 08:45:56.468', TIMESTAMP '2017-10-10 08:45:56.468', 1, 5, 'Bruno Ferreira', 'bruno@gmail.com', 'My colleague Bruno from A/C', '777888', 1);
+  (1, TIMESTAMP '2017-10-10 08:45:56.468', TIMESTAMP '2017-10-10 08:45:56.468', 1, 3, 'Sergio Gouveia', 'sergio@gmail.com', 'My colleague Sergio from A/C', '777888', 1),
+  (2, TIMESTAMP '2017-10-10 08:45:56.468', TIMESTAMP '2017-10-10 08:45:56.468', 1, 5, 'Bruno Ferreira', 'bruno@gmail.com', 'My colleague Bruno from A/C', '777888', 1);

@@ -1,6 +1,5 @@
 package org.academiadecodigo.javabank.persistence.jpa;
 
-import org.academiadecodigo.javabank.Config;
 import org.junit.After;
 import org.junit.Before;
 import org.springframework.context.support.GenericXmlApplicationContext;
@@ -19,7 +18,7 @@ public class JpaIntegrationTestHelper {
 
         ctx = new GenericXmlApplicationContext();
         ctx.getEnvironment().setActiveProfiles("test");
-        ctx.load(Config.SPRING_CONFIG);
+        ctx.load("file:src/main/webapp/WEB-INF/spring/spring-config.xml");
         ctx.refresh();
 
         emf = ctx.getBean(EntityManagerFactory.class);

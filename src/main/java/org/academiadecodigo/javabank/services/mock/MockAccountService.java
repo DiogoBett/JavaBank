@@ -17,21 +17,6 @@ public class MockAccountService extends AbstractMockService<Account> implements 
     }
 
     /**
-     * @see AccountService#add(Account)
-     */
-    @Override
-    public Integer add(Account account) {
-
-        if (account.getId() == null) {
-            account.setId(getNextId());
-        }
-
-        modelMap.put(account.getId(), account);
-
-        return account.getId();
-    }
-
-    /**
      * @see AccountService#deposit(Integer, double)
      */
     public void deposit(Integer id, double amount) {

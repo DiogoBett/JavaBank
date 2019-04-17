@@ -31,7 +31,7 @@ public class JpaCustomerDaoIntegrationTest extends JpaIntegrationTestHelper {
     public void testFindById() {
 
         // setup
-        int id = 1;
+        int id = 2;
 
         // exercise
         Customer customer = customerDao.findById(id);
@@ -39,8 +39,8 @@ public class JpaCustomerDaoIntegrationTest extends JpaIntegrationTestHelper {
         // verify
         assertNotNull("Customer is null", customer);
         assertEquals("Customer id is wrong", id, customer.getId().intValue());
-        assertEquals("Customer first name is wrong", "Rui", customer.getFirstName());
-        assertEquals("Customer last name is wrong", "Ferrão", customer.getLastName());
+        assertEquals("Customer first name is wrong", "Sergio", customer.getFirstName());
+        assertEquals("Customer last name is wrong", "Gouveia", customer.getLastName());
         assertEquals("Customer email is wrong", "mail@gmail.com", customer.getEmail());
         assertEquals("Customer phone is wrong", "777888", customer.getPhone());
 
