@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * Controller responsible for rendering {@link Customer} related views
@@ -55,30 +56,32 @@ public class CustomerController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}/delete")
-    public String deleteCustomer(@PathVariable Integer id) {
+    public String deleteCustomer(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
 
         customerService.removeCustomer(id);
-        return "redirect:/customer";
+        redirectAttributes.addFlashAttribute("lastAction", "Deleted Customer Sucessfully");
+        return "redirect:/customer/list";
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/add")
     public String addCustomer(Model model) {
 
         Customer newCustomer = new Customer();
-        newCustomer.setFirstName("First Name");
-        newCustomer.setLastName("Last Name");
-        newCustomer.setEmail("E-Mail");
-        newCustomer.setPhone("Phone Number");
+        newCustomer.setFirstName("");
+        newCustomer.setLastName("");
+        newCustomer.setEmail("");
+        newCustomer.setPhone("");
 
         model.addAttribute("customer", newCustomer);
         return "customer/add";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/addCustomer")
-    public String processCustomer(@ModelAttribute(value = "customer") Customer customer) {
+    public String processCustomer(@ModelAttribute(value = "customer") Customer customer, RedirectAttributes redirectAttributes) {
 
         Customer editedCustomer = customerService.add(customer);
-        return "redirect:/customer/" + editedCustomer.getId();
+        redirectAttributes.addFlashAttribute("lastAction", "Customer Added Sucesfully");
+        return "redirect:/customer/list" + editedCustomer.getId();
     }
 
 }
