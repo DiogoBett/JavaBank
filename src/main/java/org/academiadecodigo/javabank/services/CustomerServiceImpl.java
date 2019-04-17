@@ -63,6 +63,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public Customer saveOrUpdate(Customer customer) {
         return customerDao.saveOrUpdate(customer);
     }

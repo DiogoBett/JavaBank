@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <thymeleaf th:replace="header :: header"/>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Customer Details</h1>
+
+    <form th:object="${customer}" th:action="@{/customer/addCustomer}" method="post">
+
+        <input type="hidden" th:field="*{id}" value="*{id}">
+
+        <div class="form-group">
+            <label>First Name</label>
+            <input type="text" th:field="*{firstName}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Last Name</label>
+            <input ttype="text" th:field="*{lastName}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>E-Mail</label>
+            <input type="text" th:field="*{email}" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text" th:field="*{phone}" class="form-control">
+        </div>
+        <div>
+            <button style="display: inline" type="submit" class="btn btn-primary">Submit</button>
+            <h4 style="display: inline"><a class="btn btn-danger" th:href="@{'/customer/list'}">Cancel</a></h4>
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

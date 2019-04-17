@@ -21,9 +21,18 @@ public class MockCustomerService extends AbstractMockService<Customer> implement
         return modelMap.get(id);
     }
 
+    @Override
+    public Customer saveOrUpdate(Customer customer) {
+        modelMap.put(customer.getId(), customer);
+        return customer;
+    }
+
     /**
      * @see CustomerService#getBalance(Integer)
      */
+
+
+
     @Override
     public double getBalance(Integer customerId) {
 

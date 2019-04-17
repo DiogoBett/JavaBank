@@ -1,6 +1,11 @@
 package org.academiadecodigo.javabank.controller;
 
+import org.academiadecodigo.javabank.dto.AccountDTO;
+import org.academiadecodigo.javabank.dto.CustomerDTO;
+import org.academiadecodigo.javabank.dto.converters.AccountConverter;
+import org.academiadecodigo.javabank.dto.converters.CustomerConverter;
 import org.academiadecodigo.javabank.persistence.model.Customer;
+import org.academiadecodigo.javabank.persistence.model.account.Account;
 import org.academiadecodigo.javabank.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,7 +14,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Controller responsible for rendering {@link Customer} related views
@@ -19,6 +26,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class CustomerController {
 
     private CustomerService customerService;
+    private CustomerConverter customerConverter;
+    private AccountConverter accountConverter;
 
     /**
      * Sets the customer service
@@ -30,6 +39,16 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+    @Autowired
+    public void setCustomerConverter(CustomerConverter customerConverter) {
+        this.customerConverter = customerConverter;
+    }
+
+    @Autowired
+    public void setAccountConverter(AccountConverter accountConverter) {
+        this.accountConverter = accountConverter;
+    }
+
     /**
      * Renders a view with a list of customers
      *
@@ -38,7 +57,14 @@ public class CustomerController {
      */
     @RequestMapping(method = RequestMethod.GET, path = {"/list", "/", ""})
     public String listCustomers(Model model) {
-        model.addAttribute("customers", customerService.list());
+
+        List<CustomerDTO> customerDTOS = new LinkedList<>();
+
+        for (Customer customer : customerService.list()) {
+            customerDTOS.add(customerConverter.customerToDTO(customer));
+        }
+
+        model.addAttribute("customers", customerDTOS);
         return "customer/list";
     }
 
@@ -51,8 +77,18 @@ public class CustomerController {
      */
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
     public String showCustomer(@PathVariable Integer id, Model model) {
-        model.addAttribute("customer", customerService.get(id));
+
+        Customer customer = customerService.get(id);
+        List<AccountDTO> accountDTOS = new LinkedList<>();
+
+        for (Account account : customer.getAccounts()) {
+            accountDTOS.add(accountConverter.accountToAccountDTO(account));
+        }
+
+        model.addAttribute("customer", customerConverter.customerToDTO(customer));
+        model.addAttribute("accounts", accountDTOS);
         model.addAttribute("recipients", customerService.listRecipients(id));
+
         return "customer/show";
     }
 
@@ -84,22 +120,38 @@ public class CustomerController {
     @RequestMapping(method = RequestMethod.GET, path = "/add")
     public String addCustomer(Model model) {
 
-        Customer newCustomer = new Customer();
-        newCustomer.setFirstName("");
-        newCustomer.setLastName("");
-        newCustomer.setEmail("");
-        newCustomer.setPhone("");
+        CustomerDTO customerDTO = new CustomerDTO();
+        model.addAttribute("customer", customerDTO);
 
-        model.addAttribute("customer", newCustomer);
-        return "customer/add";
+        return "customer/details";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/{id}/edit")
+    public String editCustomer(Model model, @PathVariable Integer id) {
+
+        model.addAttribute("customer", customerConverter.customerToDTO(customerService.get(id)));
+
+        return "customer/details";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/addCustomer")
-    public String processCustomer(@ModelAttribute(value = "customer") Customer customer, RedirectAttributes redirectAttributes) {
+    public String processData(@ModelAttribute(value = "customer") CustomerDTO customerDTO) {
 
-        Customer editedCustomer = customerService.saveOrUpdate(customer);
-        redirectAttributes.addFlashAttribute("lastAction", "Customer Added Sucesfully");
-        return "redirect:/customer/list" + editedCustomer.getId();
+        Customer customer = null;
+
+        if (customerDTO.getId() == 0) {
+            customer = customerService.saveOrUpdate(customerConverter.dtoToCustomer(customerDTO));
+            return "redirect:/customer/" + customer.getId();
+        }
+
+        customer = customerService.get(customerDTO.getId());
+        customer.setFirstName(customerDTO.getFirstName());
+        customer.setLastName(customerDTO.getLastName());
+        customer.setEmail(customerDTO.getEmail());
+        customer.setPhone(customerDTO.getPhone());
+        customerService.saveOrUpdate(customer);
+
+        return "redirect:/customer/" + customer.getId();
     }
 
 }

@@ -27,6 +27,10 @@ public abstract class Account extends AbstractModel {
         return balance;
     }
 
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
     /**
      * Gets the account costumer
      *
