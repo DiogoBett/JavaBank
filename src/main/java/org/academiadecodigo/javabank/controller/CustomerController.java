@@ -5,9 +5,11 @@ import org.academiadecodigo.javabank.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * Controller responsible for rendering {@link Customer} related views
@@ -78,4 +80,26 @@ public class CustomerController {
         customerService.removeRecipient(cid, rid);
         return "redirect:/customer/" + cid;
     }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/add")
+    public String addCustomer(Model model) {
+
+        Customer newCustomer = new Customer();
+        newCustomer.setFirstName("");
+        newCustomer.setLastName("");
+        newCustomer.setEmail("");
+        newCustomer.setPhone("");
+
+        model.addAttribute("customer", newCustomer);
+        return "customer/add";
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/addCustomer")
+    public String processCustomer(@ModelAttribute(value = "customer") Customer customer, RedirectAttributes redirectAttributes) {
+
+        Customer editedCustomer = customerService.saveOrUpdate(customer);
+        redirectAttributes.addFlashAttribute("lastAction", "Customer Added Sucesfully");
+        return "redirect:/customer/list" + editedCustomer.getId();
+    }
+
 }

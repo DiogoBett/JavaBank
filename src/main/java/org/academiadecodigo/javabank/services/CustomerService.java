@@ -55,4 +55,6 @@ public interface CustomerService {
      * @param recipientId the recipient id
      */
     void removeRecipient(Integer id, Integer recipientId);
+
+    Customer saveOrUpdate(Customer customer);
 }

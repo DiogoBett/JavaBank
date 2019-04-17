@@ -62,6 +62,11 @@ public class CustomerServiceImpl implements CustomerService {
         return customerDao.findById(id);
     }
 
+    @Override
+    public Customer saveOrUpdate(Customer customer) {
+        return customerDao.saveOrUpdate(customer);
+    }
+
     /**
      * @see CustomerService#getBalance(Integer)
      */
