@@ -14,9 +14,16 @@
 
 <center>
     <div class="container">
-        <h1 th:inline="text">Customer #[[${customer.id}]] - Edit Details</h1>
+        <h1>Add JavaBank Customer</h1>
 
-        
+        <form th:object="${customer}" th:action="@{/customer/addCustomer}" method="post">
+            <input type="text" th:field="*{firstName}"/><br>
+            <input type="text" th:field="*{lastName}"/><br>
+            <input type="text" th:field="*{email}"/><br>
+            <input type="text" th:field="*{phone}"/><br>
+            <input type="submit">
+        </form>
+
     </div>
 </center>
 </body>

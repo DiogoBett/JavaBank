@@ -61,20 +61,24 @@ public class CustomerController {
         return "redirect:/customer";
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/{id}/edit")
-    public String editCustomer(Model model, @PathVariable Integer id) {
+    @RequestMapping(method = RequestMethod.GET, path = "/add")
+    public String addCustomer(Model model) {
 
-        Customer customer = customerService.get(id);
-        model.addAttribute("customer", customer);
-        return "redirect:/customer/" + customer.getId();
+        Customer newCustomer = new Customer();
+        newCustomer.setFirstName("First Name");
+        newCustomer.setLastName("Last Name");
+        newCustomer.setEmail("E-Mail");
+        newCustomer.setPhone("Phone Number");
+
+        model.addAttribute("customer", newCustomer);
+        return "customer/add";
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/addCustomer")
+    public String processCustomer(@ModelAttribute(value = "customer") Customer customer) {
 
-    @RequestMapping(method = RequestMethod.POST, value = "/add")
-    public String addCustomer(@ModelAttribute Customer customer) {
-
-        Customer newCustomer = customerService.add(customer);
-        return "redirect:/customer/" + newCustomer.getId();
+        Customer editedCustomer = customerService.add(customer);
+        return "redirect:/customer/" + editedCustomer.getId();
     }
 
 }
