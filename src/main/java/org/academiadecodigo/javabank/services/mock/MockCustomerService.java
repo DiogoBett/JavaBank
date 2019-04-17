@@ -23,6 +23,17 @@ public class MockCustomerService extends AbstractMockService<Customer> implement
         return modelMap.get(id);
     }
 
+    @Override
+    public void removeCustomer(Integer id) {
+        modelMap.remove(get(id));
+    }
+
+    @Override
+    public Customer add(Customer customer) {
+        modelMap.put(customer.getId(), customer);
+        return customer;
+    }
+
     /**
      * @see CustomerService#getBalance(Integer)
      */

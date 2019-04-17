@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Customer Info</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          modelType="text/css"/>
+    <script modelType="application/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script modelType="application/javascript" async
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+<center>
+    <div class="container">
+
+        <h1 th:inline="text"> Customer #[[${customer.id}]]</h1>
+
+        <div class="jumbotron">
+            <h1 th:inline="text">Hello, [[${customer.firstName}]] [[${customer.lastName}]]!</h1>
+            <p th:inline="text"><b>Email:</b> [[${customer.email}]]</p>
+            <p th:inline="text"><b>Phone:</b> [[${customer.phone}]]</p>
+            <p><a class="btn btn-primary btn-lg" th:href="@{'/customer'}" role="button">Go Back</a></p>
+        </div>
+
+        <div th:if="${not #lists.isEmpty(accounts)}">
+            <table class="table table-striped">
+                <tr>
+                    <th>#</th>
+                    <th>Balance</th>
+                </tr>
+                <tr th:each="account : ${accounts}">
+                    <td th:text="${account.id}"></td>
+                    <td th:text="${account.balance}"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div th:if="${not #lists.isEmpty(recipients)}">
+            <table class="table table-striped">
+                <tr>
+                    <th>Name</th>
+                    <th>E-mail</th>
+                    <th>Phone</th>
+                    <th>Account Number</th>
+                    <th>Description</th>
+                </tr>
+                <tr th:each="recipient : ${recipients}">
+                    <td th:text="${recipient.name}"></td>
+                    <td th:text="${recipient.email}"></td>
+                    <td th:text="${recipient.phone}"></td>
+                    <td th:text="${recipient.accountNumber}"></td>
+                    <td th:text="${recipient.description}"></td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+</center>
+</body>
+</html>

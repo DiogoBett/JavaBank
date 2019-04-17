@@ -39,6 +39,18 @@ public class CustomerServiceImpl implements CustomerService {
         return customerDao.findById(id);
     }
 
+    @Override
+    @Transactional
+    public Customer add(Customer customer) {
+        return customerDao.saveOrUpdate(customer);
+    }
+
+    @Override
+    @Transactional
+    public void removeCustomer(Integer id) {
+        customerDao.delete(id);
+    }
+
     /**
      * @see CustomerService#getBalance(Integer)
      */
