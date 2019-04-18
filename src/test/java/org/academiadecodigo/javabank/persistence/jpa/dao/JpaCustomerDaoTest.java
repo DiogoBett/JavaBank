@@ -103,4 +103,5 @@ public class JpaCustomerDaoTest {
         verify(em, times(1)).remove(fakeCustomer);
 
     }
+
 }

@@ -16,5 +16,4 @@ public class JpaRecipientDao extends GenericJpaDao<Recipient> implements Recipie
     public JpaRecipientDao() {
         super(Recipient.class);
     }
-
 }

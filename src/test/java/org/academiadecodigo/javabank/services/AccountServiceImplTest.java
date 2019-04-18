@@ -1,10 +1,11 @@
 package org.academiadecodigo.javabank.services;
 
-import org.academiadecodigo.javabank.persistence.model.account.Account;
 import org.academiadecodigo.javabank.persistence.dao.AccountDao;
+import org.academiadecodigo.javabank.persistence.model.account.Account;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class AccountServiceImplTest {
@@ -16,8 +17,27 @@ public class AccountServiceImplTest {
     public void setup() {
 
         accountDao = mock(AccountDao.class);
+
         accountService = new AccountServiceImpl();
         accountService.setAccountDao(accountDao);
+
+    }
+
+    @Test
+    public void testGet() {
+
+        //setup
+        int fakeId = 9999;
+        Account fakeAccount = mock(Account.class);
+        when(accountDao.findById(fakeId)).thenReturn(fakeAccount);
+        when(fakeAccount.getId()).thenReturn(fakeId);
+
+        //exercise
+        Account returnAcc = accountService.get(fakeId);
+
+        //verify
+        verify(accountDao, times(1)).findById(fakeId);
+        assertTrue(returnAcc.getId() == fakeId);
     }
 
 
@@ -101,6 +121,7 @@ public class AccountServiceImplTest {
         verify(fakeDstAccount, times(1)).canCredit(amount);
         verify(fakeSrcAccount, times(1)).debit(amount);
         verify(fakeDstAccount, times(1)).credit(amount);
+
     }
 
     @Test
@@ -124,6 +145,7 @@ public class AccountServiceImplTest {
         verify(accountDao, times(1)).saveOrUpdate(fakeSrcAccount);
         verify(accountDao, times(1)).saveOrUpdate(fakeDstAccount);
         verify(fakeSrcAccount, times(1)).canDebit(amount);
+
     }
 
     @Test
@@ -147,6 +169,7 @@ public class AccountServiceImplTest {
         verify(accountDao, times(1)).saveOrUpdate(fakeSrcAccount);
         verify(accountDao, times(1)).saveOrUpdate(fakeDstAccount);
         verify(fakeDstAccount, times(1)).canCredit(amount);
+
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -162,6 +185,7 @@ public class AccountServiceImplTest {
 
         // exercise
         accountService.transfer(fakeSrcId, fakeDstId, amount);
+
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -177,5 +201,7 @@ public class AccountServiceImplTest {
 
         // exercise
         accountService.transfer(fakeSrcId, fakeDstId, amount);
+
     }
+
 }

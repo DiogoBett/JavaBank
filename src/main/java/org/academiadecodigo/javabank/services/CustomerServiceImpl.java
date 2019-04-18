@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
-import static org.academiadecodigo.javabank.errors.ErrorMessage.*;
+import java.util.Set;
 
 /**
  * An {@link CustomerService} implementation
@@ -58,6 +58,7 @@ public class CustomerServiceImpl implements CustomerService {
     /**
      * @see CustomerService#get(Integer)
      */
+    @Override
     public Customer get(Integer id) {
         return customerDao.findById(id);
     }
@@ -71,7 +72,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerDao.findById(id);
 
         if (customer == null) {
-            throw new IllegalArgumentException(CUSTOMER_NOT_FOUND);
+            throw new IllegalArgumentException("Customer does not exists");
         }
 
         List<Account> accounts = customer.getAccounts();
@@ -82,6 +83,15 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         return balance;
+    }
+
+    /**
+     * @see CustomerService#save(Customer)
+     */
+    @Transactional
+    @Override
+    public Customer save(Customer customer) {
+        return customerDao.saveOrUpdate(customer);
     }
 
     /**
@@ -110,13 +120,36 @@ public class CustomerServiceImpl implements CustomerService {
 
         // check then act logic requires transaction,
         // event if read only
+
         Customer customer = customerDao.findById(id);
 
         if (customer == null) {
-            throw new IllegalArgumentException(CUSTOMER_NOT_FOUND);
+            throw new IllegalArgumentException("Customer does not exist");
         }
 
         return new ArrayList<>(customerDao.findById(id).getRecipients());
+    }
+
+    /**
+     * @see CustomerService#addRecipient(Integer, Recipient)
+     */
+    @Transactional
+    @Override
+    public void addRecipient(Integer id, Recipient recipient) {
+
+        Customer customer = customerDao.findById(id);
+
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer does not exist");
+        }
+
+        if (accountDao.findById(recipient.getAccountNumber()) == null ||
+                getAccountIds(customer).contains(recipient.getAccountNumber())) {
+            throw new IllegalArgumentException("Invalid account number");
+        }
+
+        customer.addRecipient(recipient);
+        customerDao.saveOrUpdate(customer);
     }
 
     /**
@@ -128,21 +161,32 @@ public class CustomerServiceImpl implements CustomerService {
 
         Customer customer = customerDao.findById(id);
 
-        Recipient recipient = recipientDao.findById(recipientId);
-
         if (customer == null) {
-            throw new IllegalArgumentException(CUSTOMER_NOT_FOUND);
+            throw new IllegalArgumentException("Customer does not exist");
         }
 
+        Recipient recipient = recipientDao.findById(recipientId);
+
         if (recipient == null) {
-            throw new IllegalArgumentException(RECIPIENT_NOT_FOUND);
+            throw new IllegalArgumentException("Recipient does not exist");
         }
 
         if (!recipient.getCustomer().getId().equals(id)) {
-            throw new IllegalArgumentException(CUSTOMER_RECIPIENT_NOT_FOUND);
+            throw new IllegalArgumentException("Recipient not owned by customer");
         }
 
         customer.removeRecipient(recipient);
         customerDao.saveOrUpdate(customer);
     }
+
+    private Set<Integer> getAccountIds(Customer customer) {
+        Set<Integer> accountIds = new HashSet<>();
+        List<Account> accounts = customer.getAccounts();
+
+        for (Account account : accounts) {
+            accountIds.add(account.getId());
+        }
+        return accountIds;
+    }
 }
+

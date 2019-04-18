@@ -1,15 +1,17 @@
 package org.academiadecodigo.javabank.services;
 
+import org.academiadecodigo.javabank.persistence.dao.AccountDao;
+import org.academiadecodigo.javabank.persistence.dao.CustomerDao;
+import org.academiadecodigo.javabank.persistence.dao.RecipientDao;
 import org.academiadecodigo.javabank.persistence.model.Customer;
 import org.academiadecodigo.javabank.persistence.model.Recipient;
 import org.academiadecodigo.javabank.persistence.model.account.Account;
 import org.academiadecodigo.javabank.persistence.model.account.CheckingAccount;
-import org.academiadecodigo.javabank.persistence.dao.AccountDao;
-import org.academiadecodigo.javabank.persistence.dao.CustomerDao;
-import org.academiadecodigo.javabank.persistence.dao.RecipientDao;
+import org.academiadecodigo.javabank.persistence.model.account.SavingsAccount;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -82,7 +84,22 @@ public class CustomerServiceImplTest {
 
         // exercise
         customerService.getBalance(1);
+    }
 
+    @Test
+    public void testList() {
+
+        //setup
+        List<Customer> fakeList = mock(ArrayList.class);
+
+        when(customerDao.findAll()).thenReturn(fakeList);
+
+        //exercise
+        List<Customer> list = customerService.list();
+
+        //verify
+        assertNotNull(list);
+        verify(customerDao, times(1)).findAll();
     }
 
     @Test
@@ -105,13 +122,25 @@ public class CustomerServiceImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testListRecipientsInvalidCustomerId() {
+    public void testListRecipientsInvalidCustomer() {
 
         // setup
         when(customerDao.findById(anyInt())).thenReturn(null);
 
         // exercise
         customerService.listRecipients(1);
+    }
+
+    @Test
+    public void testDelete() {
+
+        //setup
+
+        //exercise
+        customerService.delete(anyInt());
+
+        //verify
+        verify(customerDao, times(1)).delete(anyInt());
     }
 
     @Test
@@ -125,6 +154,7 @@ public class CustomerServiceImplTest {
         Customer fakeCustomer = spy(new Customer());
         Recipient fakeRecipient = new Recipient();
         Recipient fakeRecipient2 = new Recipient();
+        fakeRecipient.setId(fakeRecipientId);
         fakeRecipient.setCustomer(fakeCustomer);
         fakeRecipient2.setCustomer(fakeCustomer);
         fakeCustomer.getRecipients().add(fakeRecipient);
@@ -150,7 +180,7 @@ public class CustomerServiceImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testRemoveRecipientInvalidCustomerId() {
+    public void testRemoveRecipientInvalidCustomer() {
 
         // setup
         int fakeRecipientId = 8888;
@@ -163,7 +193,7 @@ public class CustomerServiceImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testRemoveRecipientInvalidRecipientId() {
+    public void testRemoveRecipientInvalidRecipient() {
 
         // setup
         int fakeCustomerId = 9999;
@@ -174,4 +204,93 @@ public class CustomerServiceImplTest {
         // exercise
         customerService.removeRecipient(fakeCustomerId, 1);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRemoveRecipientInvalidRecipientOwner() {
+
+        // setup
+        int fakeRecipientId = 8888;
+        Recipient fakeRecipient = new Recipient();
+
+        int fakeCustomerIdThatIsTryingToRemove = 9998;
+
+        int fakeCustomerId = 9999;
+        Customer fakeCustomer = new Customer();
+        fakeCustomer.setId(fakeCustomerId);
+
+        fakeRecipient.setCustomer(fakeCustomer);
+
+        when(recipientDao.findById(fakeRecipientId)).thenReturn(fakeRecipient);
+        when(customerDao.findById(fakeCustomerIdThatIsTryingToRemove)).thenReturn(fakeCustomer);
+
+        // exercise
+        customerService.removeRecipient(fakeCustomerIdThatIsTryingToRemove, fakeRecipientId);
+    }
+
+    @Test
+    public void testSave() {
+
+        //setup
+        Customer fakeCustomer = mock(Customer.class);
+
+        when(customerDao.saveOrUpdate(fakeCustomer)).thenReturn(fakeCustomer);
+
+        //exercise
+        Customer customer = customerService.save(fakeCustomer);
+
+        //verify
+        assertNotNull(customer);
+        verify(customerDao, times(1)).saveOrUpdate(fakeCustomer);
+    }
+
+    @Test
+    public void testAddRecipient() {
+
+        // setup
+        int fakeCustomerId = 8888;
+        Customer fakeCustomer = new Customer();
+
+        Recipient fakeRecipient = new Recipient();
+
+        when(customerDao.findById(fakeCustomerId)).thenReturn(fakeCustomer);
+        when(accountDao.findById(fakeRecipient.getAccountNumber())).thenReturn(new SavingsAccount());
+
+        // exercise
+        customerService.addRecipient(fakeCustomerId, fakeRecipient);
+
+        // verify
+        assertTrue(customerService.get(fakeCustomerId).getRecipients().contains(fakeRecipient));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddRecipientInvalidCustomer() {
+
+        // setup
+        int fakeCustomerId = 8888;
+
+        Recipient fakeRecipient = new Recipient();
+
+        when(customerDao.findById(fakeCustomerId)).thenReturn(null);
+
+        // exercise
+        customerService.addRecipient(fakeCustomerId, fakeRecipient);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddRecipientInvalidAccount() {
+
+        // setup
+        int fakeCustomerId = 8888;
+        Customer fakeCustomer = new Customer();
+
+        Recipient fakeRecipient = new Recipient();
+
+        when(customerDao.findById(fakeCustomerId)).thenReturn(fakeCustomer);
+        when(accountDao.findById(fakeRecipient.getAccountNumber())).thenReturn(null);
+
+        // exercise
+        customerService.addRecipient(fakeCustomerId, fakeRecipient);
+    }
+
+
 }
