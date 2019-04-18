@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head lang="en">
+<head>
     <thymeleaf th:replace="header :: header" />
 </head>
 <body>
@@ -14,33 +14,40 @@
         <div class="col-sm-8">
             <form class="form-horizontal" th:object="${recipient}" th:action="@{'/customer/' + ${customer.id} + '/recipient'}" method="post">
 
+                <div th:replace="form-error :: form-error"></div>
+
                 <!-- since we are using same form for add and update,
                   we need to bind id input field to customer object
                   to avoid duplicating records on update -->
                 <input type="hidden" th:field="*{id}"/>
 
-                <div class="form-group">
+
+                <div class="form-group" th:classappend="${#fields.hasErrors('accountNumber')} ? has-error">
                     <label class="col-sm-2 control-label">Account:</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" th:field="*{accountNumber}"/>
+                        <span class="help-block" th:if="${#fields.hasErrors('accountNumber')}" th:errors="*{accountNumber}">Account Number error messages</span>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? has-error">
                     <label class="col-sm-2 control-label">Name:</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" th:field="*{name}"/>
+                        <span class="help-block" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error messages</span>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" th:classappend="${#fields.hasErrors('email')} ? has-error">
                     <label class="col-sm-2 control-label">Email:</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" th:field="*{email}"/>
+                        <span class="help-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error messages</span>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" th:classappend="${#fields.hasErrors('phone')} ? has-error">
                     <label class="col-sm-2 control-label">Phone:</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" th:field="*{phone}"/>
+                        <span class="help-block" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone error messages</span>
                     </div>
                 </div>
                 <div class="form-group">

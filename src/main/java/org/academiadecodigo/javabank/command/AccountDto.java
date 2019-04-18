@@ -1,7 +1,7 @@
 package org.academiadecodigo.javabank.command;
 
-import org.academiadecodigo.javabank.persistence.model.account.AccountType;
 import org.academiadecodigo.javabank.persistence.model.account.Account;
+import org.academiadecodigo.javabank.persistence.model.account.AccountType;
 
 /**
  * The {@link Account} data transfer object
@@ -9,9 +9,9 @@ import org.academiadecodigo.javabank.persistence.model.account.Account;
 public class AccountDto {
 
     private Integer id;
+    private Double balance;
     private AccountType type;
-
-    private double balance;
+    private Integer customerId;
 
     /**
      * Gets the id of the account dto
@@ -32,49 +32,56 @@ public class AccountDto {
     }
 
     /**
+     * Gets the initial amount of the account dto
+     *
+     * @return the initial amount
+     */
+    public Double getBalance() {
+        return balance;
+    }
+
+    /**
+     * Sets the initial amount of the account dto
+     *
+     * @param balance the amount to set
+     */
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
+    /**
      * Gets the type of the account dto
      *
-     * @return the account dto type
+     * @return the account type
      */
     public AccountType getType() {
         return type;
     }
 
     /**
-     * Sets the type of the account dto
+     * Sets the account dto type
      *
-     * @param type the type to set
+     * @param type the account type to set
      */
     public void setType(AccountType type) {
         this.type = type;
     }
 
     /**
-     * Gets the balance of the account dto
+     * Gets the account dto customer id
      *
-     * @return the account dto balance
+     * @return the customer id
      */
-    public double getBalance() {
-        return balance;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
     /**
-     * Sets the balance of the account dto
+     * Sets the account dto customer id
      *
-     * @param balance the balance to set
+     * @param customerId the customer id to set
      */
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
-    /**
-     * @see Object#toString()
-     */
-    @Override
-    public String toString() {
-        return "AccountDto{" +
-                "id=" + id +
-                ", type=" + type +
-                '}';
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 }

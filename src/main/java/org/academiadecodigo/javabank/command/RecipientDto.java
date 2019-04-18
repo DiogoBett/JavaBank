@@ -2,16 +2,30 @@ package org.academiadecodigo.javabank.command;
 
 import org.academiadecodigo.javabank.persistence.model.Recipient;
 
+import javax.validation.constraints.*;
+
 /**
  * The {@link Recipient} data transfer object
  */
 public class RecipientDto {
 
     private Integer id;
+
+    @NotNull(message = "account number is mandatory")
     private Integer accountNumber;
+
+    @NotNull(message = "name is mandatory")
+    @NotBlank(message = "name is mandatory")
+    @Size(min = 3, max = 64)
     private String name;
+
+    @Email
     private String email;
+
+    @Pattern(regexp = "^\\+?[0-9]*$", message = "phone number contains invalid characters")
+    @Size(min = 9, max = 16)
     private String phone;
+
     private String description;
 
     /**

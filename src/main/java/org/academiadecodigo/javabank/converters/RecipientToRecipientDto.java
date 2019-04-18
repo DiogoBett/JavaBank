@@ -15,7 +15,7 @@ public class RecipientToRecipientDto extends AbstractConverter<Recipient, Recipi
      * Converts the recipient model object into a recipient dto object
      *
      * @param recipient the recipient
-     * @return the recipient form
+     * @return the recipient dto
      */
     @Override
     public RecipientDto convert(Recipient recipient) {

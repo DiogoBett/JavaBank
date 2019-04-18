@@ -4,12 +4,10 @@ import org.academiadecodigo.javabank.persistence.model.account.Account;
 import org.academiadecodigo.javabank.persistence.model.account.AccountType;
 import org.academiadecodigo.javabank.persistence.model.account.CheckingAccount;
 import org.academiadecodigo.javabank.persistence.model.account.SavingsAccount;
-import org.springframework.stereotype.Component;
 
 /**
  * A factory for creating accounts of different types
  */
-@Component
 public class AccountFactory {
 
     /**

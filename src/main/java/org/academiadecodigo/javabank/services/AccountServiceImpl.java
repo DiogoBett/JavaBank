@@ -1,5 +1,6 @@
 package org.academiadecodigo.javabank.services;
 
+import org.academiadecodigo.javabank.exceptions.AccountNotFoundException;
 import org.academiadecodigo.javabank.persistence.dao.AccountDao;
 import org.academiadecodigo.javabank.persistence.model.account.Account;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +38,12 @@ public class AccountServiceImpl implements AccountService {
      */
     @Transactional
     @Override
-    public void deposit(Integer id, double amount) {
+    public void deposit(Integer id, double amount) throws AccountNotFoundException {
 
         Account account = accountDao.findById(id);
 
         if (account == null) {
-            throw new IllegalArgumentException("invalid account id");
+            throw new AccountNotFoundException();
         }
 
         account.credit(amount);
@@ -55,12 +56,12 @@ public class AccountServiceImpl implements AccountService {
      */
     @Transactional
     @Override
-    public void withdraw(Integer id, double amount) {
+    public void withdraw(Integer id, double amount) throws AccountNotFoundException {
 
         Account account = accountDao.findById(id);
 
         if (account == null) {
-            throw new IllegalArgumentException("invalid account id");
+            throw new AccountNotFoundException();
         }
 
         account.debit(amount);
@@ -73,13 +74,13 @@ public class AccountServiceImpl implements AccountService {
      */
     @Transactional
     @Override
-    public void transfer(Integer srcId, Integer dstId, double amount) {
+    public void transfer(Integer srcId, Integer dstId, double amount) throws AccountNotFoundException {
 
         Account srcAccount = accountDao.findById(srcId);
         Account dstAccount = accountDao.findById(dstId);
 
         if (srcAccount == null || dstAccount == null) {
-            throw new IllegalArgumentException("invalid account id");
+            throw new AccountNotFoundException();
         }
 
         // make sure transaction can be performed

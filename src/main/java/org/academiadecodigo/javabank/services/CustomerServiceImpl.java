@@ -1,11 +1,15 @@
 package org.academiadecodigo.javabank.services;
 
-import org.academiadecodigo.javabank.persistence.model.Customer;
-import org.academiadecodigo.javabank.persistence.model.Recipient;
-import org.academiadecodigo.javabank.persistence.model.account.Account;
+import org.academiadecodigo.javabank.exceptions.AccountNotFoundException;
+import org.academiadecodigo.javabank.exceptions.AssociationExistsException;
+import org.academiadecodigo.javabank.exceptions.CustomerNotFoundException;
+import org.academiadecodigo.javabank.exceptions.RecipientNotFoundException;
 import org.academiadecodigo.javabank.persistence.dao.AccountDao;
 import org.academiadecodigo.javabank.persistence.dao.CustomerDao;
 import org.academiadecodigo.javabank.persistence.dao.RecipientDao;
+import org.academiadecodigo.javabank.persistence.model.Customer;
+import org.academiadecodigo.javabank.persistence.model.Recipient;
+import org.academiadecodigo.javabank.persistence.model.account.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,12 +71,12 @@ public class CustomerServiceImpl implements CustomerService {
      * @see CustomerService#getBalance(Integer)
      */
     @Override
-    public double getBalance(Integer id) {
+    public double getBalance(Integer id) throws CustomerNotFoundException {
 
         Customer customer = customerDao.findById(id);
 
         if (customer == null) {
-            throw new IllegalArgumentException("Customer does not exists");
+            throw new CustomerNotFoundException();
         }
 
         List<Account> accounts = customer.getAccounts();
@@ -99,7 +103,18 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Transactional
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws CustomerNotFoundException, AssociationExistsException {
+
+        Customer customer = customerDao.findById(id);
+
+        if (customer == null) {
+            throw new CustomerNotFoundException();
+        }
+
+        if (!customer.getAccounts().isEmpty()) {
+            throw new AssociationExistsException();
+        }
+
         customerDao.delete(id);
     }
 
@@ -116,7 +131,7 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Transactional(readOnly = true)
     @Override
-    public List<Recipient> listRecipients(Integer id) {
+    public List<Recipient> listRecipients(Integer id) throws CustomerNotFoundException {
 
         // check then act logic requires transaction,
         // event if read only
@@ -124,10 +139,11 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerDao.findById(id);
 
         if (customer == null) {
-            throw new IllegalArgumentException("Customer does not exist");
+            throw new CustomerNotFoundException();
         }
 
         return new ArrayList<>(customerDao.findById(id).getRecipients());
+
     }
 
     /**
@@ -135,21 +151,22 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Transactional
     @Override
-    public void addRecipient(Integer id, Recipient recipient) {
+    public void addRecipient(Integer id, Recipient recipient) throws CustomerNotFoundException, AccountNotFoundException {
 
         Customer customer = customerDao.findById(id);
 
         if (customer == null) {
-            throw new IllegalArgumentException("Customer does not exist");
+            throw new CustomerNotFoundException();
         }
 
         if (accountDao.findById(recipient.getAccountNumber()) == null ||
                 getAccountIds(customer).contains(recipient.getAccountNumber())) {
-            throw new IllegalArgumentException("Invalid account number");
+            throw new AccountNotFoundException();
         }
 
         customer.addRecipient(recipient);
         customerDao.saveOrUpdate(customer);
+
     }
 
     /**
@@ -157,22 +174,18 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Transactional
     @Override
-    public void removeRecipient(Integer id, Integer recipientId) {
+    public void removeRecipient(Integer id, Integer recipientId) throws CustomerNotFoundException, RecipientNotFoundException {
 
         Customer customer = customerDao.findById(id);
 
         if (customer == null) {
-            throw new IllegalArgumentException("Customer does not exist");
+            throw new CustomerNotFoundException();
         }
 
         Recipient recipient = recipientDao.findById(recipientId);
 
-        if (recipient == null) {
-            throw new IllegalArgumentException("Recipient does not exist");
-        }
-
-        if (!recipient.getCustomer().getId().equals(id)) {
-            throw new IllegalArgumentException("Recipient not owned by customer");
+        if (recipient == null || !customer.getRecipients().contains(recipient)) {
+            throw new RecipientNotFoundException();
         }
 
         customer.removeRecipient(recipient);
@@ -189,4 +202,3 @@ public class CustomerServiceImpl implements CustomerService {
         return accountIds;
     }
 }
-

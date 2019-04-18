@@ -15,7 +15,7 @@ public class CustomerToCustomerDto extends AbstractConverter<Customer, CustomerD
      * Converts the customer model object into a customer dto object
      *
      * @param customer the customer
-     * @return the customer dto
+     * @return the costumer dto
      */
     @Override
     public CustomerDto convert(Customer customer) {

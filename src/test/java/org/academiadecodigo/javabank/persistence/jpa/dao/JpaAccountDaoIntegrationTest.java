@@ -1,10 +1,10 @@
 package org.academiadecodigo.javabank.persistence.jpa.dao;
 
+import org.academiadecodigo.javabank.persistence.dao.jpa.JpaAccountDao;
+import org.academiadecodigo.javabank.persistence.jpa.JpaIntegrationTestHelper;
 import org.academiadecodigo.javabank.persistence.model.account.Account;
 import org.academiadecodigo.javabank.persistence.model.account.AccountType;
 import org.academiadecodigo.javabank.persistence.model.account.CheckingAccount;
-import org.academiadecodigo.javabank.persistence.dao.jpa.JpaAccountDao;
-import org.academiadecodigo.javabank.persistence.jpa.JpaIntegrationTestHelper;
 import org.junit.Before;
 import org.junit.Test;
 

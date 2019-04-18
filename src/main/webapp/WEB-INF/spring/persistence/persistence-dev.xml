@@ -8,10 +8,10 @@
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 
     <!-- H2 console -->
-    <bean id="h2WebServer" class="org.h2.tools.Server" factory-method="createWebServer" init-method="start"
-          destroy-method="stop">
-        <constructor-arg value="-web,-webAllowOthers,-webDaemon,-webPort,${dev.h2.port}"/>
-    </bean>
+    <!--<bean id="h2WebServer" class="org.h2.tools.Server" factory-method="createWebServer" init-method="start"-->
+          <!--destroy-method="stop">-->
+        <!--<constructor-arg value="-web,-webAllowOthers,-webDaemon,-webPort,${dev.h2.port}"/>-->
+    <!--</bean>-->
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.h2.Driver"/>

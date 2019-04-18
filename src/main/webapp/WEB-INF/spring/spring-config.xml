@@ -14,7 +14,11 @@
     <mvc:default-servlet-handler/>
 
     <!-- User @Controller, @Service annotations -->
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven />
+
+    <mvc:interceptors>
+        <bean class="org.academiadecodigo.javabank.interceptor.LogRequestsInterceptor"/>
+    </mvc:interceptors>
 
     <!-- Base package to search for spring beans -->
     <context:component-scan base-package="org.academiadecodigo.javabank"/>

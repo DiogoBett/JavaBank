@@ -1,5 +1,9 @@
 package org.academiadecodigo.javabank.services;
 
+import org.academiadecodigo.javabank.exceptions.AccountNotFoundException;
+import org.academiadecodigo.javabank.exceptions.AssociationExistsException;
+import org.academiadecodigo.javabank.exceptions.CustomerNotFoundException;
+import org.academiadecodigo.javabank.exceptions.RecipientNotFoundException;
 import org.academiadecodigo.javabank.persistence.model.Customer;
 import org.academiadecodigo.javabank.persistence.model.Recipient;
 
@@ -23,8 +27,9 @@ public interface CustomerService {
      *
      * @param id the customer id
      * @return the balance of the customer with the given id
+     * @throws CustomerNotFoundException
      */
-    double getBalance(Integer id);
+    double getBalance(Integer id) throws CustomerNotFoundException;
 
     /**
      * Saves a customer
@@ -38,8 +43,10 @@ public interface CustomerService {
      * Deletes a customer
      *
      * @param id the customer id
+     * @throws CustomerNotFoundException
+     * @throws AssociationExistsException
      */
-    void delete(Integer id);
+    void delete(Integer id) throws CustomerNotFoundException, AssociationExistsException;
 
     /**
      * Gets a list of the customers
@@ -53,22 +60,27 @@ public interface CustomerService {
      *
      * @param id the customer id
      * @return the list of recipients of the customer
+     * @throws CustomerNotFoundException
      */
-    List<Recipient> listRecipients(Integer id);
+    List<Recipient> listRecipients(Integer id) throws CustomerNotFoundException;
 
     /**
      * Adds a recipient to the customer
      *
      * @param id        the customer id
      * @param recipient the recipient to add
+     * @throws CustomerNotFoundException
+     * @throws AccountNotFoundException
      */
-    void addRecipient(Integer id, Recipient recipient);
+    void addRecipient(Integer id, Recipient recipient) throws CustomerNotFoundException, AccountNotFoundException;
 
     /**
      * Removes a recipient from the customer
      *
      * @param id          the customer id
      * @param recipientId the recipient id
+     * @throws CustomerNotFoundException
+     * @throws RecipientNotFoundException
      */
-    void removeRecipient(Integer id, Integer recipientId);
+    void removeRecipient(Integer id, Integer recipientId) throws CustomerNotFoundException, RecipientNotFoundException;
 }

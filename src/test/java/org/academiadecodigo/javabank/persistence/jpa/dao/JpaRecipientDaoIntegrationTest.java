@@ -1,8 +1,8 @@
 package org.academiadecodigo.javabank.persistence.jpa.dao;
 
-import org.academiadecodigo.javabank.persistence.model.Recipient;
 import org.academiadecodigo.javabank.persistence.dao.jpa.JpaRecipientDao;
 import org.academiadecodigo.javabank.persistence.jpa.JpaIntegrationTestHelper;
+import org.academiadecodigo.javabank.persistence.model.Recipient;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,7 +38,7 @@ public class JpaRecipientDaoIntegrationTest extends JpaIntegrationTestHelper {
         assertEquals("Recipient id is wrong", id, recipient.getId().intValue());
         assertEquals("Recipient name is wrong", "Bruno Ferreira", recipient.getName());
         assertEquals("Recipient email is wrong", "bruno@gmail.com", recipient.getEmail());
-        assertEquals("Recipient description is wrong", "My colleague Bruno from A/C", recipient.getDescription());
+        assertEquals("Recipient description is wrong", "My colelague Bruno from A/C", recipient.getDescription());
         assertEquals("Recipient phone is wrong", "777888", recipient.getPhone());
 
     }

@@ -128,7 +128,20 @@ public class RecipientControllerTest {
         fakeRecipient.setDescription(fakeRecipientDescription);
         fakeRecipient.setCustomer(fakeCustomer);
 
+        RecipientDto recipientDto = new RecipientDto();
+
+        recipientDto.setId(fakeRecipientId);
+        recipientDto.setAccountNumber(fakeRecipientAccountNumber);
+        recipientDto.setName(fakeRecipientName);
+        recipientDto.setEmail(fakeRecipientEmail);
+        recipientDto.setPhone(fakeRecipientPhone);
+        recipientDto.setDescription(fakeRecipientDescription);
+
+        CustomerDto fakeCustomerDto = new CustomerDto();
+        fakeCustomerDto.setId(fakeCustomerId);
+
         when(recipientDtoToRecipient.convert(ArgumentMatchers.any(RecipientDto.class))).thenReturn(fakeRecipient);
+        when(customerToCustomerDto.convert(ArgumentMatchers.any(Customer.class))).thenReturn(fakeCustomerDto);
 
         //exercise
         mockMvc.perform(post("/customer/" + fakeCustomerId + "/recipient")

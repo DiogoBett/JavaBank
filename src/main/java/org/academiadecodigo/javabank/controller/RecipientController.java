@@ -4,23 +4,24 @@ import org.academiadecodigo.javabank.command.RecipientDto;
 import org.academiadecodigo.javabank.converters.CustomerToCustomerDto;
 import org.academiadecodigo.javabank.converters.RecipientDtoToRecipient;
 import org.academiadecodigo.javabank.converters.RecipientToRecipientDto;
+import org.academiadecodigo.javabank.exceptions.AccountNotFoundException;
+import org.academiadecodigo.javabank.exceptions.CustomerNotFoundException;
+import org.academiadecodigo.javabank.exceptions.RecipientNotFoundException;
 import org.academiadecodigo.javabank.persistence.model.Recipient;
 import org.academiadecodigo.javabank.services.CustomerService;
 import org.academiadecodigo.javabank.services.RecipientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-/**
- * Controller responsible for rendering {@link Recipient} related views
- *
- * @see RecipientService
- */
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/customer")
 public class RecipientController {
@@ -53,9 +54,9 @@ public class RecipientController {
     }
 
     /**
-     * Sets the converter for converting between recipient model objects and recipient dto objects
+     * Sets the converter for converting between recipient model objects and recipient form objects
      *
-     * @param recipientToRecipientDto the recipient to recipient dto converter to set
+     * @param recipientToRecipientDto the recipient to recipient form converter to set
      */
     @Autowired
     public void setRecipientToRecipientDto(RecipientToRecipientDto recipientToRecipientDto) {
@@ -63,9 +64,9 @@ public class RecipientController {
     }
 
     /**
-     * Sets the converter for converting between recipient dto objects and recipient model objects
+     * Sets the converter for converting between recipient form objects and recipient model objects
      *
-     * @param recipientDtoToRecipient the recipient dto to recipient converter to set
+     * @param recipientDtoToRecipient the recipient form to recipient converter to set
      */
     @Autowired
     public void setRecipientDtoToRecipient(RecipientDtoToRecipient recipientDtoToRecipient) {
@@ -73,9 +74,9 @@ public class RecipientController {
     }
 
     /**
-     * Sets the converter for converting between customer model objects and customer dto objects
+     * Sets the customer to customer form converter
      *
-     * @param customerToCustomerDto the customer to customer dto converter to set
+     * @param customerToCustomerDto the customer form to customer converter
      */
     @Autowired
     public void setCustomerToCustomerDto(CustomerToCustomerDto customerToCustomerDto) {
@@ -86,7 +87,7 @@ public class RecipientController {
      * Adds a recipient
      *
      * @param cid   the customer id
-     * @param model th model object
+     * @param model the model object
      * @return the view to render
      */
     @RequestMapping(method = RequestMethod.GET, path = "/{cid}/recipient/add")
@@ -112,42 +113,63 @@ public class RecipientController {
     }
 
     /**
-     * Saves the recipient form submission and renders a view with the customer details
+     * Saves the recipient form submission
      *
      * @param cid                the customer id
      * @param recipientDto      the recipient form
-     * @param redirectAttributes the redirect attributes model
+     * @param bindingResult      the binding result object
+     * @param redirectAttributes the redirect attribute object
+     * @param model              the model object
      * @return the view to render
+     * @throws CustomerNotFoundException
      */
     @RequestMapping(method = RequestMethod.POST, path = {"/{cid}/recipient/", "/{cid}/recipient"}, params = "action=save")
-    public String saveRecipient(@PathVariable Integer cid, @ModelAttribute("recipient") RecipientDto recipientDto, RedirectAttributes redirectAttributes) {
-        customerService.addRecipient(cid, recipientDtoToRecipient.convert(recipientDto));
-        redirectAttributes.addFlashAttribute("lastAction", "Saved " + recipientDto.getName());
-        return "redirect:/customer/" + cid;
+    public String saveRecipient(@PathVariable Integer cid, @Valid @ModelAttribute("recipient") RecipientDto recipientDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) throws CustomerNotFoundException {
+
+        model.addAttribute("customer", customerToCustomerDto.convert(customerService.get(cid)));
+
+        if (bindingResult.hasErrors()) {
+            return "recipient/add-update";
+        }
+
+        try {
+
+            Recipient recipient = recipientDtoToRecipient.convert(recipientDto);
+            customerService.addRecipient(cid, recipient);
+
+            redirectAttributes.addFlashAttribute("lastAction", "Saved " + recipient.getName());
+            return "redirect:/customer/" + cid;
+
+        } catch (AccountNotFoundException ex) {
+
+            bindingResult.rejectValue("accountNumber", "invalid.account", "invalid account number");
+            return "recipient/add-update";
+        }
     }
 
     /**
-     * Cancels the recipient form submission and renders a view with the customer details
+     * Cancels the recipient form submission
      *
      * @param cid the customer id
      * @return the view to render
      */
     @RequestMapping(method = RequestMethod.POST, path = {"/{cid}/recipient/", "/{cid}/recipient"}, params = "action=cancel")
     public String cancelSaveRecipient(@PathVariable Integer cid) {
-        // we could use an anchor tag in the view for this, but we might want to do something clever in the future here
         return "redirect:/customer/" + cid;
     }
 
     /**
-     * Deletes the recipient and renders a view with the customer details
+     * Deletes the recipient
      *
      * @param cid                the customer id
      * @param id                 the recipient id
-     * @param redirectAttributes the redirect attributes model
+     * @param redirectAttributes the redirect attributes object
      * @return the view to render
+     * @throws CustomerNotFoundException
+     * @throws RecipientNotFoundException
      */
     @RequestMapping(method = RequestMethod.GET, path = "/{cid}/recipient/{id}/delete")
-    public String deleteRecipient(@PathVariable Integer cid, @PathVariable Integer id, RedirectAttributes redirectAttributes) {
+    public String deleteRecipient(@PathVariable Integer cid, @PathVariable Integer id, RedirectAttributes redirectAttributes) throws CustomerNotFoundException, RecipientNotFoundException {
         Recipient recipient = recipientService.get(id);
         customerService.removeRecipient(cid, id);
         redirectAttributes.addFlashAttribute("lastAction", "Deleted " + recipient.getName());

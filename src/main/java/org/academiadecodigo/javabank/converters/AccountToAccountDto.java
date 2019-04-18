@@ -6,13 +6,13 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 /**
- * A {@link Converter} implementation, responsible for {@link Account} to {@link AccountDto} type conversion
+ * A {@link Converter} implementation, responsible for {@link AccountDto} to {@link Account} type conversion
  */
 @Component
 public class AccountToAccountDto extends AbstractConverter<Account, AccountDto> {
 
     /**
-     * Converts the account model object into a account dto object
+     * Converts the account object into a account dto object
      *
      * @param account the account
      * @return the account dto
@@ -21,12 +21,11 @@ public class AccountToAccountDto extends AbstractConverter<Account, AccountDto> 
     public AccountDto convert(Account account) {
 
         AccountDto accountDto = new AccountDto();
-
         accountDto.setId(account.getId());
-        accountDto.setType(account.getAccountType());
+        accountDto.setCustomerId(account.getCustomer().getId());
         accountDto.setBalance(account.getBalance());
+        accountDto.setType(account.getAccountType());
 
         return accountDto;
-
     }
 }
