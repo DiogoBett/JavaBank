@@ -23,24 +23,28 @@
                     <label class="col-sm-2 control-label">First Name:</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" th:field="*{firstName}"/>
+                        <span style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Last Name:</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" th:field="*{lastName}"/>
+                        <span style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Email:</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" th:field="*{email}"/>
+                        <span style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Phone:</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" th:field="*{phone}"/>
+                        <span style="color: red" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
                     </div>
                 </div>
                 <div class="row">

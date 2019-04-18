@@ -2,15 +2,32 @@ package org.academiadecodigo.javabank.command;
 
 import org.academiadecodigo.javabank.persistence.model.Customer;
 
+import javax.validation.constraints.*;
+
 /**
  * The {@link Customer} data transfer object
  */
 public class CustomerDto {
 
     private Integer id;
+
+    @NotNull(message = "First Name is Mandatory")
+    @NotBlank(message = "First Name is Mandatory")
+    @Size(min=3, max=64, message = "Size Must be Between 3 and 64")
     private String firstName;
+
+    @NotNull(message = "Last Name is Mandatory")
+    @NotBlank(message = "Last Name is Mandatory")
+    @Size(min=3, max=64, message = "Size Must be Between 3 and 64")
     private String lastName;
+
+    @NotNull(message = "E-Mail is Mandatory")
+    @NotBlank(message = "E-Mail is Mandatory")
+    @Email
     private String email;
+
+    @Pattern(regexp = "(9[1236][0-9]) ?([0-9]{3}) ?([0-9]{3})", message = "Phone has Invalid Characters")
+    @Size(min=9, max=16, message = "Size Must be Between 9 and 16")
     private String phone;
 
     /**
