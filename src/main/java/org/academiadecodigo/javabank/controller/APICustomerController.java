@@ -1,15 +1,11 @@
 package org.academiadecodigo.javabank.controller;
 
-import org.academiadecodigo.javabank.command.AccountDto;
 import org.academiadecodigo.javabank.command.CustomerDto;
-import org.academiadecodigo.javabank.converters.AccountToAccountDto;
 import org.academiadecodigo.javabank.converters.CustomerDtoToCustomer;
 import org.academiadecodigo.javabank.converters.CustomerToCustomerDto;
 import org.academiadecodigo.javabank.exceptions.AssociationExistsException;
 import org.academiadecodigo.javabank.exceptions.CustomerNotFoundException;
 import org.academiadecodigo.javabank.persistence.model.Customer;
-import org.academiadecodigo.javabank.persistence.model.account.Account;
-import org.academiadecodigo.javabank.services.AccountService;
 import org.academiadecodigo.javabank.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
