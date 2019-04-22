@@ -36,24 +36,6 @@ public class AccountServiceImpl implements AccountService {
         return accountDao.findById(id);
     }
 
-    @Override
-    public List<Account> getAccounts(Integer customerId) {
-
-        List<Account> accounts = new LinkedList<>();
-
-        for (Account account : accountDao.findAll()) {
-            if (account.getCustomer().getId() == customerId) {
-                accounts.add(account);
-            }
-        }
-
-        if(accounts.isEmpty()) {
-            return null;
-        }
-
-        return accounts;
-    }
-
     @Transactional
     @Override
     public void delete(Integer id) {

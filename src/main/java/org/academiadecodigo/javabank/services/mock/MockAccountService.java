@@ -22,11 +22,6 @@ public class MockAccountService extends AbstractMockService<Account> implements 
     }
 
     @Override
-    public List<Account> getAccounts(Integer customerId) {
-        return new LinkedList<>(modelMap.values());
-    }
-
-    @Override
     public void delete(Integer id) {
         modelMap.remove(id);
     }
