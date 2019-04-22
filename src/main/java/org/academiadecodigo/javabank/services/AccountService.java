@@ -3,6 +3,8 @@ package org.academiadecodigo.javabank.services;
 import org.academiadecodigo.javabank.exceptions.AccountNotFoundException;
 import org.academiadecodigo.javabank.persistence.model.account.Account;
 
+import java.util.List;
+
 /**
  * Common interface for account services, provides methods to manage accounts and perform account transactions
  */
@@ -16,6 +18,7 @@ public interface AccountService {
      */
     Account get(Integer id);
 
+    void delete(Integer id);
     /**
      * Perform an {@link Account} deposit
      *

@@ -33,6 +33,12 @@ public class AccountServiceImpl implements AccountService {
         return accountDao.findById(id);
     }
 
+
+    @Override
+    public void delete(Integer id) {
+        accountDao.delete(id);
+    }
+
     /**
      * @see AccountService#deposit(Integer, double)
      */

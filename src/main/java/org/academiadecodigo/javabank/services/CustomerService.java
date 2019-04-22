@@ -6,6 +6,7 @@ import org.academiadecodigo.javabank.exceptions.CustomerNotFoundException;
 import org.academiadecodigo.javabank.exceptions.RecipientNotFoundException;
 import org.academiadecodigo.javabank.persistence.model.Customer;
 import org.academiadecodigo.javabank.persistence.model.Recipient;
+import org.academiadecodigo.javabank.persistence.model.account.Account;
 
 import java.util.List;
 
@@ -83,4 +84,7 @@ public interface CustomerService {
      * @throws RecipientNotFoundException
      */
     void removeRecipient(Integer id, Integer recipientId) throws CustomerNotFoundException, RecipientNotFoundException;
+
+    Account getAccount(Integer cid, Integer aid);
+
 }

@@ -18,6 +18,11 @@ public class MockAccountService extends AbstractMockService<Account> implements 
         return modelMap.get(id);
     }
 
+    @Override
+    public void delete(Integer id) {
+        modelMap.remove(id);
+    }
+
     /**
      * @see AccountService#deposit(Integer, double)
      */

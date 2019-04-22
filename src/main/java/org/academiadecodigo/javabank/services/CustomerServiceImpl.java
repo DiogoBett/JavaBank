@@ -67,6 +67,24 @@ public class CustomerServiceImpl implements CustomerService {
         return customerDao.findById(id);
     }
 
+    @Override
+    public Account getAccount(Integer customerId, Integer accountId) {
+
+        Customer customer = get(customerId);
+
+        if(customer == null) {
+            return null;
+        }
+
+        for (Account account : customer.getAccounts()) {
+            if(account.getId() == accountId) {
+                return account;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * @see CustomerService#getBalance(Integer)
      */

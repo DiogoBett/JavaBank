@@ -39,6 +39,19 @@ public class MockCustomerService extends AbstractMockService<Customer> implement
         return modelMap.get(id);
     }
 
+    public Account getAccount(Integer customerId, Integer accountId) {
+
+        Customer customer = modelMap.get(customerId);
+
+        for (Account account : customer.getAccounts()) {
+            if(account.getId() == accountId) {
+                return account;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * @see CustomerService#getBalance(Integer)
      */

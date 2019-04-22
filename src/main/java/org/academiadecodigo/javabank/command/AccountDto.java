@@ -84,4 +84,15 @@ public class AccountDto {
     public void setCustomerId(Integer customerId) {
         this.customerId = customerId;
     }
+
+    @Override
+    public String toString() {
+        return "AccountDto{" +
+                "id=" + id +
+                ", balance=" + balance +
+                ", type=" + type +
+                ", customerId=" + customerId +
+                '}';
+    }
+
 }
