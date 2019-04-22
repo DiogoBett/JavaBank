@@ -5,6 +5,9 @@ import org.academiadecodigo.javabank.persistence.model.account.Account;
 import org.academiadecodigo.javabank.persistence.model.account.AccountType;
 import org.academiadecodigo.javabank.services.AccountService;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * A mock {@link AccountService} implementation
  */
@@ -16,6 +19,11 @@ public class MockAccountService extends AbstractMockService<Account> implements 
     @Override
     public Account get(Integer id) {
         return modelMap.get(id);
+    }
+
+    @Override
+    public List<Account> getAccounts(Integer customerId) {
+        return new LinkedList<>(modelMap.values());
     }
 
     @Override

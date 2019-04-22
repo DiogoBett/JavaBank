@@ -5,7 +5,6 @@ import org.academiadecodigo.javabank.converters.AccountToAccountDto;
 import org.academiadecodigo.javabank.persistence.model.Customer;
 import org.academiadecodigo.javabank.persistence.model.account.Account;
 import org.academiadecodigo.javabank.services.AccountService;
-import org.academiadecodigo.javabank.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,18 +20,11 @@ import java.util.List;
 public class APIAccountController {
 
     private AccountService accountService;
-    private CustomerService customerService;
-
     private AccountToAccountDto accountToAccountDto;
 
     @Autowired
     public void setAccountService(AccountService accountService) {
         this.accountService = accountService;
-    }
-
-    @Autowired
-    public void setCustomerService(CustomerService customerService) {
-        this.customerService = customerService;
     }
 
     @Autowired
@@ -43,22 +35,22 @@ public class APIAccountController {
     @RequestMapping(method = RequestMethod.GET, value = "/{id}/accounts")
     public ResponseEntity<List<AccountDto>> getCustomerAccounts(@PathVariable Integer id) {
 
-        Customer customer = customerService.get(id);
+        List<Account> accounts = accountService.getAccounts(id);
 
-        if (customer == null) {
+        if (accounts == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(accountToAccountDto.convert(customer.getAccounts()), HttpStatus.OK);
+        return new ResponseEntity<>(accountToAccountDto.convert(accounts), HttpStatus.OK);
 
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{cid}/accounts/{aid}")
     public ResponseEntity<AccountDto> getCustomerAccount(@PathVariable Integer cid, @PathVariable Integer aid) {
 
-        Account account = customerService.getAccount(cid, aid);
+        Account account = accountService.get(aid);
 
-        if (account == null) {
+        if (account == null || account.getCustomer().getId() != cid) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -69,13 +61,17 @@ public class APIAccountController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/{cid}/accounts/{aid}")
     public ResponseEntity<String> deleteCustomerAccount(@PathVariable Integer cid, @PathVariable Integer aid) {
 
-        Account account = customerService.getAccount(cid, aid);
+        Customer customer = accountService.get(aid).getCustomer();
 
-        if (account == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (customer == null || customer.getId() != cid) {
+            return new ResponseEntity<>("Customer or Account - NOT FOUND", HttpStatus.NOT_FOUND);
         }
 
-        accountService.delete(aid);
+        for (Account account : customer.getAccounts()) {
+            if(account.getId() == aid) {
+                customer.getAccounts().iterator().remove();
+            }
+        }
 
         return new ResponseEntity<>("Account has been Deleted", HttpStatus.OK);
 

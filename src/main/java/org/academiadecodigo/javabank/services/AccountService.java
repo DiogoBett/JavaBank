@@ -18,6 +18,8 @@ public interface AccountService {
      */
     Account get(Integer id);
 
+    List<Account> getAccounts(Integer customerId);
+
     void delete(Integer id);
     /**
      * Perform an {@link Account} deposit
